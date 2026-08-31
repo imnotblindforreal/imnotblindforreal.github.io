@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Web Notepad with Reset Font</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --editor-bg: #ffffff;
+            --text-color: #000000;
+            --accent-color: #0078d7;
+            --accent-hover: #106ebe;
+            --border-color: #dfdfdf;
+            --toolbar-bg: #f3f3f3;
+            --menu-hover: #e5e5e5;
+            --dropdown-bg: #ffffff;
+            --dropdown-border: #cccccc;
+            --tab-bg: #e1dfdd;
+            --tab-active-bg: #ffffff;
+            --highlight-color: rgba(255, 235, 59, 0.4);
+            --default-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-family: var(--default-font-family);
+            --font-size: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Classic Menu Bar */
+        .menubar {
+            background-color: var(--toolbar-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            height: 28px;
+            align-items: center;
+            padding-left: 4px;
+            font-size: 13px;
+            user-select: none;
+            z-index: 50;
+        }
+
+        .menu-item {
+            position: relative;
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: var(--menu-hover);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--dropdown-bg);
+            border: 1px solid var(--dropdown-border);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            min-width: 180px;
+            padding: 4px 0;
+            z-index: 60;
+        }
+
+        .menu-item.active .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 6px 16px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-color);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 4px 0;
+        }
+
+        /* Custom Context Menu (Editor Right-Click) */
+        #context-menu {
+            display: none;
+            position: fixed;
+            background-color: var(--dropdown-bg);
+            border: 1px solid var(--dropdown-border);
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+            min-width: 160px;
+            padding: 4px 0;
+            z-index: 1000;
+            font-size: 12px;
+            user-select: none;
+        }
+
+        .ctx-item {
+            padding: 6px 16px;
+            cursor: pointer;
+            color: var(--text-color);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .ctx-item:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        .ctx-divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 4px 0;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            background-color: var(--toolbar-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            height: 32px;
+            padding-left: 4px;
+            gap: 2px;
+        }
+
+        .tab {
+            background-color: var(--tab-bg);
+            color: #666;
+            padding: 0 10px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            border-top: 2px solid transparent;
+            cursor: pointer;
+            border-right: 1px solid var(--border-color);
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background-color: var(--tab-active-bg);
+            color: var(--text-color);
+            border-top-color: var(--accent-color);
+        }
+
+        .tab:hover:not(.active) {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .tab .close-tab {
+            font-size: 14px;
+            border-radius: 50%;
+            padding: 2px;
+            line-height: 10px;
+        }
+
+        .tab .close-tab:hover {
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .new-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 16px;
+            padding: 0 10px;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .new-tab-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Editor Wrapper */
+        .editor-container {
+            position: relative;
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            background-color: var(--editor-bg);
+        }
+
+        #backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 12px;
+            font-family: var(--font-family);
+            font-size: var(--font-size);
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-y: auto;
+            color: transparent;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #backdrop mark {
+            background-color: var(--highlight-color);
+            color: transparent;
+            border-radius: 2px;
+        }
+
+        #editor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 12px;
+            background: transparent;
+            color: var(--text-color);
+            font-family: var(--font-family);
+            font-size: var(--font-size);
+            line-height: 1.5;
+            border: none;
+            outline: none;
+            resize: none;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-y: auto;
+            z-index: 2;
+        }
+
+        /* Modals / Dialogs */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fefefe;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 16px;
+            border-radius: 4px;
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            color: #000;
+        }
+
+        .modal-content h3 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .modal-content input, .modal-content textarea {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: #000000;
+            padding: 6px;
+            border-radius: 2px;
+            font-family: inherit;
+            font-size: 13px;
+            width: 100%;
+        }
+
+        .modal-content textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .modal-buttons button {
+            background-color: #e1dfdd;
+            color: #000;
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .modal-buttons button:hover {
+            background-color: #c8c6c4;
+        }
+
+        .modal-buttons button.primary {
+            background-color: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-hover);
+        }
+
+        .modal-buttons button.primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Status Bar */
+        .statusbar {
+            background-color: var(--toolbar-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 4px 12px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            color: #555;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menubar" id="menubar">
+        <div class="menu-item" data-menu="file">File
+            <div class="dropdown-menu">
+                <div class="dropdown-item" id="menu-new"><span>New Tab</span></div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" id="menu-save"><span>Save</span><span>Ctrl+S</span></div>
+                <div class="dropdown-item" id="menu-save-as"><span>Save As...</span></div>
+            </div>
+        </div>
+        <div class="menu-item" data-menu="edit">Edit
+            <div class="dropdown-menu">
+                <div class="dropdown-item" id="menu-undo"><span>Undo</span><span>Ctrl+Z</span></div>
+                <div class="dropdown-item" id="menu-redo"><span>Redo</span><span>Ctrl+Y</span></div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" id="menu-find"><span>Find...</span><span>Ctrl+F</span></div>
+                <div class="dropdown-item" id="menu-replace"><span>Replace...</span><span>Ctrl+H</span></div>
+            </div>
+        </div>
+        <div class="menu-item" data-menu="format">Format
+            <div class="dropdown-menu">
+                <label class="dropdown-item" for="font-file-input" style="cursor:pointer;"><span>Load Font File...</span></label>
+                <div class="dropdown-item" id="menu-reset-font"><span>Reset Font</span></div>
+            </div>
+        </div>
+        <div class="menu-item" data-menu="view">View
+            <div class="dropdown-menu">
+                <div class="dropdown-item" id="theme-light"><span>Theme: Light</span></div>
+                <div class="dropdown-item" id="theme-dark"><span>Theme: Dark</span></div>
+                <div class="dropdown-item" id="theme-sepia"><span>Theme: Sepia</span></div>
+                <div class="dropdown-item" id="theme-dracula"><span>Theme: Dracula</span></div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" id="menu-theme-custom"><span>Custom CSS / URL...</span></div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" id="menu-zoom-in"><span>Zoom In</span><span>Ctrl++</span></div>
+                <div class="dropdown-item" id="menu-zoom-out"><span>Zoom Out</span><span>Ctrl+-</span></div>
+                <div class="dropdown-item" id="menu-zoom-reset"><span>Reset Zoom</span><span>Ctrl+0</span></div>
+            </div>
+        </div>
+        <div class="menu-item" data-menu="help">Help
+            <div class="dropdown-menu">
+                <div class="dropdown-item" id="menu-about"><span>About Notepad</span></div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="font-file-input" accept=".ttf,.otf,.woff,.woff2">
+
+    <div class="tab-bar" id="tab-bar">
+        <button class="new-tab-btn" id="btn-new-tab" title="New Tab">+</button>
+    </div>
+
+    <div class="editor-container">
+        <div id="backdrop"></div>
+        <textarea id="editor" placeholder="Start typing here..."></textarea>
+    </div>
+
+    <div id="context-menu">
+        <div class="ctx-item" id="ctx-undo">Undo</div>
+        <div class="ctx-divider"></div>
+        <div class="ctx-item" id="ctx-cut">Cut</div>
+        <div class="ctx-item" id="ctx-copy">Copy</div>
+        <div class="ctx-item" id="ctx-paste">Paste</div>
+        <div class="ctx-item" id="ctx-delete">Delete</div>
+    </div>
+
+    <div class="statusbar">
+        <span id="zoom-indicator">Zoom: 100%</span>
+        <div>
+            <span id="status-pos" style="margin-right: 16px;">Ln 1, Col 1</span>
+            <span id="status-chars">Characters: 0</span>
+        </div>
+    </div>
+
+    <div id="find-modal" class="modal">
+        <div class="modal-content">
+            <h3>Find in Text</h3>
+            <input type="text" id="find-input" placeholder="Type to search...">
+            <div class="modal-buttons">
+                <button id="find-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="replace-modal" class="modal">
+        <div class="modal-content">
+            <h3>Replace All</h3>
+            <input type="text" id="replace-find-input" placeholder="Find what...">
+            <input type="text" id="replace-with-input" placeholder="Replace with...">
+            <div class="modal-buttons">
+                <button id="replace-close">Cancel</button>
+                <button id="replace-submit" class="primary">Replace All</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="rename-modal" class="modal">
+        <div class="modal-content">
+            <h3>Rename File</h3>
+            <input type="text" id="rename-input" placeholder="Filename with extension...">
+            <div class="modal-buttons">
+                <button id="rename-cancel">Cancel</button>
+                <button id="rename-submit" class="primary">Rename</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="save-as-modal" class="modal">
+        <div class="modal-content">
+            <h3>Save As</h3>
+            <input type="text" id="save-as-input" placeholder="Filename with extension...">
+            <div class="modal-buttons">
+                <button id="save-as-cancel">Cancel</button>
+                <button id="save-as-submit" class="primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="theme-modal" class="modal">
+        <div class="modal-content" style="width: 380px;">
+            <h3>Custom CSS / URL</h3>
+            <label style="font-size: 11px; color:#555;">Paste Raw CSS Code or Stylesheet URL:</label>
+            <textarea id="css-input" placeholder="body { background: #111; ... }"></textarea>
+            <div class="modal-buttons">
+                <button id="theme-close">Cancel</button>
+                <button id="theme-apply" class="primary">Apply CSS</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const backdrop = document.getElementById('backdrop');
+        const tabBar = document.getElementById('tab-bar');
+        const statusChars = document.getElementById('status-chars');
+        const statusPos = document.getElementById('status-pos');
+        const zoomIndicator = document.getElementById('zoom-indicator');
+        const contextMenu = document.getElementById('context-menu');
+
+        let currentZoom = 100;
+        let searchQuery = '';
+        let tabs = [];
+        let activeTabId = null;
+        let isInternalChange = false;
+        let tabToRenameId = null;
+
+        // --- Theme Presets Definition ---
+        const themes = {
+            light: `
+                :root {
+                    --bg-color: #ffffff;
+                    --editor-bg: #ffffff;
+                    --text-color: #000000;
+                    --accent-color: #0078d7;
+                    --accent-hover: #106ebe;
+                    --border-color: #dfdfdf;
+                    --toolbar-bg: #f3f3f3;
+                    --menu-hover: #e5e5e5;
+                    --dropdown-bg: #ffffff;
+                    --dropdown-border: #cccccc;
+                    --tab-bg: #e1dfdd;
+                    --tab-active-bg: #ffffff;
+                    --highlight-color: rgba(255, 235, 59, 0.4);
+                }
+            `,
+            dark: `
+                :root {
+                    --bg-color: #1e1e1e;
+                    --editor-bg: #1e1e1e;
+                    --text-color: #d4d4d4;
+                    --accent-color: #007acc;
+                    --accent-hover: #0098ff;
+                    --border-color: #333333;
+                    --toolbar-bg: #2d2d2d;
+                    --menu-hover: #3c3c3c;
+                    --dropdown-bg: #252526;
+                    --dropdown-border: #454545;
+                    --tab-bg: #2d2d2d;
+                    --tab-active-bg: #1e1e1e;
+                    --highlight-color: rgba(255, 235, 59, 0.3);
+                }
+            `,
+            sepia: `
+                :root {
+                    --bg-color: #f4ecd8;
+                    --editor-bg: #f4ecd8;
+                    --text-color: #5f4b32;
+                    --accent-color: #8c6239;
+                    --accent-hover: #6d4b29;
+                    --border-color: #d3c2a8;
+                    --toolbar-bg: #e6dac0;
+                    --menu-hover: #d3c2a8;
+                    --dropdown-bg: #fdfbf7;
+                    --dropdown-border: #d3c2a8;
+                    --tab-bg: #dccfb6;
+                    --tab-active-bg: #f4ecd8;
+                    --highlight-color: rgba(255, 193, 7, 0.4);
+                }
+            `,
+            dracula: `
+                :root {
+                    --bg-color: #282a36;
+                    --editor-bg: #282a36;
+                    --text-color: #f8f8f2;
+                    --accent-color: #bd93f9;
+                    --accent-hover: #ff79c6;
+                    --border-color: #44475a;
+                    --toolbar-bg: #21222c;
+                    --menu-hover: #44475a;
+                    --dropdown-bg: #21222c;
+                    --dropdown-border: #6272a4;
+                    --tab-bg: #21222c;
+                    --tab-active-bg: #282a36;
+                    --highlight-color: rgba(189, 147, 249, 0.35);
+                }
+            `
+        };
+
+        function applyThemePreset(themeName) {
+            if (themes[themeName]) {
+                applyCustomCSS(themes[themeName]);
+                localStorage.setItem('notepad_theme_preset', themeName);
+                localStorage.removeItem('notepad_css');
+            }
+        }
+
+        // --- Custom Context Menu Logic ---
+        editor.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = `${e.clientX}px`;
+            contextMenu.style.top = `${e.clientY}px`;
+        });
+
+        document.addEventListener('click', () => {
+            contextMenu.style.display = 'none';
+        });
+
+        document.getElementById('ctx-undo').addEventListener('click', () => { performUndo(); });
+        document.getElementById('ctx-cut').addEventListener('click', () => { document.execCommand('cut'); });
+        document.getElementById('ctx-copy').addEventListener('click', () => { document.execCommand('copy'); });
+        document.getElementById('ctx-paste').addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                pushUndoState();
+                editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
+                editor.setSelectionRange(start + text.length, start + text.length);
+                pushUndoState();
+                syncEditorToActiveTab();
+                saveTabsToStorage();
+                updateBackdrop();
+                updateStatus();
+            } catch (err) {}
+        });
+        document.getElementById('ctx-delete').addEventListener('click', () => {
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            if (start !== end) {
+                pushUndoState();
+                editor.value = editor.value.substring(0, start) + editor.value.substring(end);
+                editor.setSelectionRange(start, start);
+                pushUndoState();
+                syncEditorToActiveTab();
+                saveTabsToStorage();
+                updateBackdrop();
+                updateStatus();
+            }
+        });
+
+        // --- Dropdown Menus Behavior ---
+        const menuItems = document.querySelectorAll('.menu-item');
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.menubar')) {
+                menuItems.forEach(item => item.classList.remove('active'));
+            }
+        });
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const wasActive = item.classList.contains('active');
+                menuItems.forEach(i => i.classList.remove('active'));
+                if (!wasActive) item.classList.add('active');
+            });
+            item.addEventListener('mouseenter', () => {
+                if (Array.from(menuItems).some(i => i.classList.contains('active'))) {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // --- Multi-Tab Management Engine & Renaming ---
+        function initTabs() {
+            const savedTabs = localStorage.getItem('notepad_tabs');
+            const savedActiveId = localStorage.getItem('notepad_active_tab');
+
+            if (savedTabs) tabs = JSON.parse(savedTabs);
+
+            if (tabs.length === 0) {
+                tabs = [{
+                    id: 'tab_' + Date.now(),
+                    title: 'Untitled.txt',
+                    content: '',
+                    undoStack: [{ text: '', selectionStart: 0, selectionEnd: 0 }],
+                    redoStack: [],
+                    selectionStart: 0,
+                    selectionEnd: 0
+                }];
+            }
+
+            activeTabId = savedActiveId && tabs.some(t => t.id === savedActiveId) ? savedActiveId : tabs[0].id;
+            renderTabs();
+            loadActiveTabToEditor();
+        }
+
+        function saveTabsToStorage() {
+            localStorage.setItem('notepad_tabs', JSON.stringify(tabs));
+            localStorage.setItem('notepad_active_tab', activeTabId);
+        }
+
+        function openRenameModal(tabId) {
+            const tab = tabs.find(t => t.id === tabId);
+            if (!tab) return;
+            tabToRenameId = tabId;
+            const input = document.getElementById('rename-input');
+            input.value = tab.title;
+            openModal('rename-modal');
+            setTimeout(() => input.select(), 50);
+        }
+
+        document.getElementById('rename-submit').addEventListener('click', () => {
+            const newName = document.getElementById('rename-input').value.trim();
+            if (newName && tabToRenameId) {
+                const tab = tabs.find(t => t.id === tabToRenameId);
+                if (tab) {
+                    tab.title = newName;
+                    renderTabs();
+                    saveTabsToStorage();
+                }
+            }
+            closeModal('rename-modal');
+        });
+
+        document.getElementById('rename-cancel').addEventListener('click', () => closeModal('rename-modal'));
+        document.getElementById('rename-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('rename-submit').click();
+            if (e.key === 'Escape') closeModal('rename-modal');
+        });
+
+        function renderTabs() {
+            const newBtn = document.getElementById('btn-new-tab');
+            tabBar.innerHTML = '';
+            
+            tabs.forEach(tab => {
+                const tabEl = document.createElement('div');
+                tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
+                tabEl.innerHTML = `
+                    <span class="tab-title">${escapeHtml(tab.title)}</span>
+                    <span class="close-tab" data-id="${tab.id}">&times;</span>
+                `;
+                
+                tabEl.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('close-tab')) {
+                        e.stopPropagation();
+                        closeTab(tab.id);
+                    } else {
+                        switchTab(tab.id);
+                    }
+                });
+
+                tabEl.addEventListener('dblclick', (e) => {
+                    e.stopPropagation();
+                    openRenameModal(tab.id);
+                });
+
+                tabEl.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    switchTab(tab.id);
+                    openRenameModal(tab.id);
+                });
+
+                tabBar.appendChild(tabEl);
+            });
+            tabBar.appendChild(newBtn);
+        }
+
+        function switchTab(id) {
+            if (activeTabId === id) return;
+            syncEditorToActiveTab();
+            activeTabId = id;
+            loadActiveTabToEditor();
+            renderTabs();
+            saveTabsToStorage();
+        }
+
+        function syncEditorToActiveTab() {
+            const activeTab = tabs.find(t => t.id === activeTabId);
+            if (activeTab) {
+                activeTab.content = editor.value;
+                activeTab.selectionStart = editor.selectionStart;
+                activeTab.selectionEnd = editor.selectionEnd;
+            }
+        }
+
+        function loadActiveTabToEditor() {
+            const activeTab = tabs.find(t => t.id === activeTabId);
+            if (!activeTab) return;
+
+            isInternalChange = true;
+            editor.value = activeTab.content;
+            editor.setSelectionRange(activeTab.selectionStart || 0, activeTab.selectionEnd || 0);
+            searchQuery = '';
+            updateBackdrop();
+            updateStatus();
+            isInternalChange = false;
+        }
+
+        function addNewTab(title = 'Untitled.txt', content = '') {
+            syncEditorToActiveTab();
+            const newId = 'tab_' + Date.now();
+            tabs.push({
+                id: newId,
+                title: title,
+                content: content,
+                undoStack: [{ text: content, selectionStart: 0, selectionEnd: 0 }],
+                redoStack: [],
+                selectionStart: 0,
+                selectionEnd: 0
+            });
+            activeTabId = newId;
+            renderTabs();
+            loadActiveTabToEditor();
+            saveTabsToStorage();
+        }
+
+        function closeTab(id) {
+            if (tabs.length === 1) {
+                tabs[0].content = '';
+                tabs[0].title = 'Untitled.txt';
+                tabs[0].undoStack = [{ text: '', selectionStart: 0, selectionEnd: 0 }];
+                tabs[0].redoStack = [];
+                loadActiveTabToEditor();
+                saveTabsToStorage();
+                return;
+            }
+
+            const index = tabs.findIndex(t => t.id === id);
+            if (index !== -1) {
+                tabs.splice(index, 1);
+                if (activeTabId === id) activeTabId = tabs[Math.max(0, index - 1)].id;
+                renderTabs();
+                loadActiveTabToEditor();
+                saveTabsToStorage();
+            }
+        }
+
+        document.getElementById('btn-new-tab').addEventListener('click', () => addNewTab());
+        document.getElementById('menu-new').addEventListener('click', () => addNewTab());
+
+        // Load persisted themes or presets
+        if (localStorage.getItem('notepad_theme_preset')) {
+            applyThemePreset(localStorage.getItem('notepad_theme_preset'));
+        } else if (localStorage.getItem('notepad_css')) {
+            applyCustomCSS(localStorage.getItem('notepad_css'));
+        }
+
+        if (localStorage.getItem('notepad_font')) {
+            document.documentElement.style.setProperty('--font-family', localStorage.getItem('notepad_font'));
+        }
+
+        initTabs();
+
+        // --- Smart History (Ctrl+Z / Ctrl+Y) per Tab ---
+        function getActiveUndoStack() {
+            const t = tabs.find(item => item.id === activeTabId);
+            if (!t.undoStack) t.undoStack = [{ text: t.content, selectionStart: 0, selectionEnd: 0 }];
+            return t.undoStack;
+        }
+
+        function getActiveRedoStack() {
+            const t = tabs.find(item => item.id === activeTabId);
+            if (!t.redoStack) t.redoStack = [];
+            return t.redoStack;
+        }
+
+        function pushUndoState() {
+            const undoStack = getActiveUndoStack();
+            const redoStack = getActiveRedoStack();
+            if (undoStack.length > 0 && undoStack[undoStack.length - 1].text === editor.value) return;
+            undoStack.push({
+                text: editor.value,
+                selectionStart: editor.selectionStart,
+                selectionEnd: editor.selectionEnd
+            });
+            if (undoStack.length > 100) undoStack.shift();
+            redoStack.length = 0;
+        }
+
+        let typingTimer;
+        editor.addEventListener('input', () => {
+            if (isInternalChange) return;
+
+            if (searchQuery) {
+                searchQuery = '';
+                updateBackdrop();
+            }
+
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => {
+                pushUndoState();
+            }, 400);
+
+            syncEditorToActiveTab();
+            saveTabsToStorage();
+            updateBackdrop();
+            updateStatus();
+        });
+
+        function performUndo() {
+            const undoStack = getActiveUndoStack();
+            const redoStack = getActiveRedoStack();
+            if (undoStack.length > 1) {
+                redoStack.push(undoStack.pop());
+                applyState(undoStack[undoStack.length - 1]);
+            }
+        }
+
+        function performRedo() {
+            const redoStack = getActiveRedoStack();
+            const undoStack = getActiveUndoStack();
+            if (redoStack.length > 0) {
+                const state = redoStack.pop();
+                undoStack.push(state);
+                applyState(state);
+            }
+        }
+
+        editor.addEventListener('keydown', (e) => {
+            updateStatus();
+            if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
+                e.preventDefault();
+                performUndo();
+            } else if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') || (e.ctrlKey && e.key.toLowerCase() === 'y')) {
+                e.preventDefault();
+                performRedo();
+            } else if (e.ctrlKey && e.key.toLowerCase() === 's') {
+                e.preventDefault();
+                saveFile();
+            } else if (e.ctrlKey && e.key.toLowerCase() === 'f') {
+                e.preventDefault();
+                openModal('find-modal');
+                document.getElementById('find-input').focus();
+            } else if (e.ctrlKey && e.key.toLowerCase() === 'h') {
+                e.preventDefault();
+                openModal('replace-modal');
+                document.getElementById('replace-find-input').focus();
+            }
+        });
+
+        document.getElementById('menu-undo').addEventListener('click', performUndo);
+        document.getElementById('menu-redo').addEventListener('click', performRedo);
+
+        function applyState(state) {
+            isInternalChange = true;
+            editor.value = state.text;
+            editor.setSelectionRange(state.selectionStart, state.selectionEnd);
+            syncEditorToActiveTab();
+            saveTabsToStorage();
+            updateBackdrop();
+            updateStatus();
+            isInternalChange = false;
+        }
+
+        // --- Zoom Control ---
+        function setZoom(newZoom) {
+            currentZoom = Math.max(50, Math.min(300, newZoom));
+            const baseFontSize = 14;
+            const fontSize = (baseFontSize * (currentZoom / 100)) + 'px';
+            editor.style.fontSize = fontSize;
+            backdrop.style.fontSize = fontSize;
+            zoomIndicator.textContent = `Zoom: ${currentZoom}%`;
+        }
+
+        window.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+                if (e.deltaY < 0) setZoom(currentZoom + 10);
+                else setZoom(currentZoom - 10);
+            }
+        }, { passive: false });
+
+        document.getElementById('menu-zoom-in').addEventListener('click', () => setZoom(currentZoom + 10));
+        document.getElementById('menu-zoom-out').addEventListener('click', () => setZoom(currentZoom - 10));
+        document.getElementById('menu-zoom-reset').addEventListener('click', () => setZoom(100));
+
+        // --- Find Functionality ---
+        const findInput = document.getElementById('find-input');
+        findInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            updateBackdrop();
+        });
+
+        document.getElementById('menu-find').addEventListener('click', () => {
+            openModal('find-modal');
+            document.getElementById('find-input').focus();
+        });
+
+        function updateBackdrop() {
+            const text = editor.value;
+            if (!searchQuery) {
+                backdrop.innerHTML = escapeHtml(text) + '\n';
+                return;
+            }
+
+            const escapedQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedQuery})`, 'gi');
+            backdrop.innerHTML = escapeHtml(text).replace(regex, '<mark>$1</mark>') + '\n';
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // --- Replace All Functionality ---
+        document.getElementById('menu-replace').addEventListener('click', () => {
+            openModal('replace-modal');
+            document.getElementById('replace-find-input').focus();
+        });
+
+        document.getElementById('replace-submit').addEventListener('click', () => {
+            const findVal = document.getElementById('replace-find-input').value;
+            const replaceVal = document.getElementById('replace-with-input').value;
+            if (!findVal) return;
+
+            pushUndoState();
+            const regex = new RegExp(findVal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+            editor.value = editor.value.replace(regex, replaceVal);
+            
+            pushUndoState();
+            syncEditorToActiveTab();
+            saveTabsToStorage();
+            updateBackdrop();
+            updateStatus();
+            closeModal('replace-modal');
+        });
+
+        // --- File Operations ---
+        function saveFile() {
+            const activeTab = tabs.find(t => t.id === activeTabId);
+            downloadFile(editor.value, activeTab ? activeTab.title : 'document.txt', 'text/plain');
+        }
+
+        function saveAsFile() {
+            const activeTab = tabs.find(t => t.id === activeTabId);
+            const input = document.getElementById('save-as-input');
+            input.value = activeTab ? activeTab.title : 'document.txt';
+            openModal('save-as-modal');
+            setTimeout(() => input.select(), 50);
+        }
+
+        document.getElementById('save-as-submit').addEventListener('click', () => {
+            const filename = document.getElementById('save-as-input').value.trim();
+            if (filename) {
+                const activeTab = tabs.find(t => t.id === activeTabId);
+                if (activeTab) {
+                    activeTab.title = filename;
+                    renderTabs();
+                    saveTabsToStorage();
+                }
+
+                const ext = filename.split('.').pop().toLowerCase();
+                let mime = 'text/plain';
+                if (ext === 'html') mime = 'text/html';
+                else if (ext === 'js') mime = 'application/javascript';
+                else if (ext === 'css') mime = 'text/css';
+                else if (ext === 'json') mime = 'application/json';
+                downloadFile(editor.value, filename, mime);
+            }
+            closeModal('save-as-modal');
+        });
+
+        document.getElementById('save-as-cancel').addEventListener('click', () => closeModal('save-as-modal'));
+        document.getElementById('save-as-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('save-as-submit').click();
+            if (e.key === 'Escape') closeModal('save-as-modal');
+        });
+
+        document.getElementById('menu-save').addEventListener('click', saveFile);
+        document.getElementById('menu-save-as').addEventListener('click', saveAsFile);
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // --- Font File Loader & Reset Font ---
+        document.getElementById('font-file-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const fontFace = new FontFace('CustomLoadedFont', event.target.result);
+                fontFace.load().then((loadedFace) => {
+                    document.fonts.add(loadedFace);
+                    const customFontVal = "'CustomLoadedFont', monospace";
+                    document.documentElement.style.setProperty('--font-family', customFontVal);
+                    localStorage.setItem('notepad_font', customFontVal);
+                    alert('Custom font successfully applied!');
+                }).catch(() => alert('Error loading font file.'));
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        document.getElementById('menu-reset-font').addEventListener('click', () => {
+            document.documentElement.style.setProperty('--font-family', 'var(--default-font-family)');
+            localStorage.removeItem('notepad_font');
+            setZoom(100);
+        });
+
+        // --- Theme Selection Handlers ---
+        document.getElementById('theme-light').addEventListener('click', () => applyThemePreset('light'));
+        document.getElementById('theme-dark').addEventListener('click', () => applyThemePreset('dark'));
+        document.getElementById('theme-sepia').addEventListener('click', () => applyThemePreset('sepia'));
+        document.getElementById('theme-dracula').addEventListener('click', () => applyThemePreset('dracula'));
+
+        document.getElementById('menu-theme-custom').addEventListener('click', () => openModal('theme-modal'));
+        document.getElementById('theme-apply').addEventListener('click', () => {
+            const cssContent = document.getElementById('css-input').value;
+            applyCustomCSS(cssContent);
+            localStorage.setItem('notepad_css', cssContent);
+            localStorage.removeItem('notepad_theme_preset');
+            closeModal('theme-modal');
+        });
+
+        function applyCustomCSS(css) {
+            let styleTag = document.getElementById('dynamic-theme-style');
+            if (!styleTag) {
+                styleTag = document.createElement('style');
+                styleTag.id = 'dynamic-theme-style';
+                document.head.appendChild(styleTag);
+            }
+            if (css.trim().startsWith('http') || css.trim().endsWith('.css')) {
+                styleTag.innerHTML = `@import url('${css.trim()}');`;
+            } else {
+                styleTag.innerHTML = css;
+            }
+        }
+
+        document.getElementById('menu-about').addEventListener('click', () => {
+            alert('Classic Web Notepad with Reset Font capability.');
+        });
+
+        // --- UI Helpers & Status Management ---
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; menuItems.forEach(i => i.classList.remove('active')); }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        document.getElementById('find-close').addEventListener('click', () => { closeModal('find-modal'); searchQuery=''; updateBackdrop(); });
+        document.getElementById('replace-close').addEventListener('click', () => closeModal('replace-modal'));
+        document.getElementById('theme-close').addEventListener('click', () => closeModal('theme-modal'));
+
+        editor.addEventListener('click', updateStatus);
+        editor.addEventListener('keyup', updateStatus);
+
+        function updateStatus() {
+            statusChars.textContent = `Characters: ${editor.value.length}`;
+            const text = editor.value;
+            const pos = editor.selectionStart;
+            const line = text.substr(0, pos).split('\n').length;
+            const col = pos - text.lastIndexOf('\n', pos - 1);
+            statusPos.textContent = `Ln ${line}, Col ${col}`;
+        }
+
+        editor.addEventListener('scroll', () => {
+            backdrop.scrollTop = editor.scrollTop;
+            backdrop.scrollLeft = editor.scrollLeft;
+        });
+    </script>
+</body>
+</html>
