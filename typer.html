@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TYPER - Cyber Military Tactical Command</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #030712;
+            color: #22d3ee;
+            overflow: hidden;
+            user-select: none;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        /* Custom Scanlines & CRT FX */
+        .crt-overlay {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.03),
+                rgba(0, 255, 0, 0.01),
+                rgba(0, 0, 255, 0.03)
+            );
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+        /* Neon Glow Utility */
+        .glow-cyan {
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.7), 0 0 20px rgba(34, 211, 238, 0.4);
+        }
+        .glow-red {
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.8), 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+        .glow-gold {
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.8), 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+        .box-glow-cyan {
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3), inset 0 0 15px rgba(34, 211, 238, 0.1);
+        }
+        .box-glow-red {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), inset 0 0 15px rgba(239, 68, 68, 0.15);
+        }
+        .screen-shake {
+            animation: shake 0.35s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, -1px, 0); }
+            20%, 80% { transform: translate3d(4px, 2px, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, -4px, 0); }
+            40%, 60% { transform: translate3d(6px, 4px, 0); }
+        }
+        /* Hidden input hack for seamless mobile/desktop focus handling */
+        #hidden-input {
+            position: absolute;
+            opacity: 0;
+            top: -1000px;
+            left: -1000px;
+        }
+    </style>
+</head>
+<body class="w-screen h-screen relative bg-slate-950 text-cyan-400 overflow-hidden">
+
+    <!-- CRT Overlay -->
+    <div class="crt-overlay absolute inset-0 z-40"></div>
+
+    <!-- Main Game Render Canvas -->
+    <canvas id="gameCanvas" class="absolute inset-0 z-0 block w-full h-full bg-slate-950"></canvas>
+
+    <!-- Invisible input to capture keystrokes reliably everywhere -->
+    <input type="text" id="hidden-input" autocomplete="off" spellcheck="false">
+
+    <!-- Main Menu Modal Screen (Visible by default) -->
+    <div id="start-screen" class="absolute inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
+        <div class="max-w-xl w-full bg-slate-900 border-2 border-cyan-500/60 rounded-2xl p-6 sm:p-8 box-glow-cyan text-center relative overflow-hidden">
+            <!-- Decorative corner brackets -->
+            <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-cyan-400"></div>
+            <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-cyan-400"></div>
+            <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-cyan-400"></div>
+            <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-cyan-400"></div>
+
+            <div class="inline-block bg-cyan-950/80 text-cyan-400 border border-cyan-500/40 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4">
+                TACTICAL TYPING COMBAT SIMULATOR
+            </div>
+
+            <h1 class="font-orbitron text-4xl sm:text-5xl font-black text-cyan-300 tracking-wider mb-2 glow-cyan">TYPER</h1>
+            <p class="text-slate-400 text-xs sm:text-sm mb-6">Neutralize hostile infantry, armored tanks, drone swarms, sub-bosses, and giant military mechs before base breach.</p>
+
+            <!-- Difficulty Selection -->
+            <div class="mb-6">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">SELECT DIFFICULTY</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button class="diff-btn py-2 text-xs font-bold rounded border border-cyan-500/30 bg-slate-800 text-slate-300 hover:border-cyan-400 transition-all" data-diff="EASY">EASY</button>
+                    <button class="diff-btn py-2 text-xs font-bold rounded border border-cyan-500/80 bg-cyan-900/50 text-cyan-300 hover:border-cyan-400 transition-all active-diff" data-diff="MEDIUM">MEDIUM</button>
+                    <button class="diff-btn py-2 text-xs font-bold rounded border border-amber-500/30 bg-slate-800 text-slate-300 hover:border-amber-400 transition-all" data-diff="HARD">HARD</button>
+                    <button class="diff-btn py-2 text-xs font-bold rounded border border-red-500/30 bg-slate-800 text-slate-300 hover:border-red-400 transition-all" data-diff="VETERAN">VETERAN</button>
+                </div>
+            </div>
+
+            <!-- Start Button -->
+            <button id="start-btn" class="w-full py-4 font-orbitron font-bold text-lg text-slate-950 bg-gradient-to-r from-cyan-400 via-cyan-300 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 rounded-xl shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer mb-6">
+                START OPERATION
+            </button>
+
+            <!-- Highscore Info -->
+            <div class="flex justify-around items-center text-xs text-slate-400 border-t border-slate-800 pt-4">
+                <div>HIGH SCORE: <span id="menu-highscore" class="text-cyan-300 font-bold">0</span></div>
+                <div>HIGH SCORES / BEST WPM: <span id="menu-highwpm" class="text-amber-400 font-bold">0</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HUD Overlay Top Bar -->
+    <div id="hud-top" class="absolute inset-0 z-30 p-4 pointer-events-none hidden flex flex-col justify-between">
+        <div class="flex justify-between items-start gap-4">
+            <!-- Left Info Panel -->
+            <div class="bg-slate-900/80 border border-cyan-500/40 rounded-lg p-3 backdrop-blur-md box-glow-cyan w-64 pointer-events-auto">
+                <div class="flex justify-between items-center text-xs text-cyan-300/70 border-b border-cyan-500/30 pb-1 mb-2">
+                    <span>COMMAND HUD</span>
+                    <span id="diff-tag" class="text-amber-400 font-bold">MEDIUM</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                        <div class="text-xs text-slate-400">SCORE</div>
+                        <div id="score-val" class="font-orbitron text-xl font-bold text-cyan-300 glow-cyan">0</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400">WPM</div>
+                        <div id="wpm-val" class="font-orbitron text-xl font-bold text-amber-400 glow-gold">0</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400">ACCURACY</div>
+                        <div id="acc-val" class="font-orbitron text-lg font-bold text-emerald-400">100%</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400">COMBO</div>
+                        <div id="combo-val" class="font-orbitron text-lg font-bold text-purple-400">x1</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Central Boss Health Bar Container (Hidden by default) -->
+            <div id="boss-hud" class="flex-1 max-w-xl bg-slate-900/90 border-2 border-red-500/60 rounded-xl p-3 backdrop-blur-md box-glow-red hidden pointer-events-auto transition-all duration-300">
+                <div class="flex justify-between items-center mb-1">
+                    <span id="boss-title" class="font-orbitron text-red-500 font-bold tracking-wider text-sm glow-red">STAGE BOSS DETECTED</span>
+                    <span id="boss-hp-text" class="font-orbitron text-xs text-red-400">100/100</span>
+                </div>
+                <div class="w-full bg-slate-950 rounded-full h-4 border border-red-500/40 p-0.5 relative overflow-hidden">
+                    <div id="boss-hp-bar" class="h-full bg-gradient-to-r from-red-600 via-amber-500 to-red-500 rounded-full transition-all duration-200" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <!-- Right Controls & Wave Info -->
+            <div class="bg-slate-900/80 border border-cyan-500/40 rounded-lg p-3 backdrop-blur-md box-glow-cyan w-64 pointer-events-auto text-right">
+                <div class="flex justify-between items-center text-xs text-cyan-300/70 border-b border-cyan-500/30 pb-1 mb-2">
+                    <button id="audio-toggle" class="hover:text-cyan-200 transition-colors">AUDIO: <span id="audio-status" class="text-emerald-400">ON</span></button>
+                    <span id="wave-counter" class="font-bold text-cyan-400">WAVE 1</span>
+                </div>
+                <div class="text-xs text-slate-400 mb-1">ACTIVE PERKS / POWER-UPS</div>
+                <div class="flex justify-end gap-2 mb-2" id="powerup-icons">
+                    <span id="perk-freeze" class="px-2 py-0.5 rounded text-[10px] bg-cyan-950/80 border border-cyan-500/30 text-cyan-500/40">FREEZE</span>
+                    <span id="perk-shield" class="px-2 py-0.5 rounded text-[10px] bg-emerald-950/80 border border-emerald-500/30 text-emerald-500/40">REPAIR</span>
+                    <span id="perk-nuke" class="px-2 py-0.5 rounded text-[10px] bg-amber-950/80 border border-amber-500/30 text-amber-500/40">NUKE</span>
+                </div>
+                <button id="pause-btn" class="w-full py-1 text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 border border-cyan-500/40 rounded transition-all">PAUSE (ESC)</button>
+            </div>
+        </div>
+
+        <!-- Player Base HP & Shield Overlay (Bottom Bar Fixed) -->
+        <div class="mt-auto w-full flex justify-center pb-2 pointer-events-auto">
+            <div class="w-full max-w-lg bg-slate-900/90 border border-cyan-500/40 rounded-lg p-2.5 backdrop-blur-md box-glow-cyan text-center shadow-2xl">
+                <div class="flex justify-between items-center text-xs mb-1.5 px-1">
+                    <span id="player-hp-text" class="font-bold text-cyan-300">SHIELD: 100% | HULL: 100%</span>
+                    <span class="text-slate-400">INPUT BUFFER: <span id="input-buffer" class="text-emerald-400 font-bold font-mono"></span></span>
+                </div>
+                <div class="w-full bg-slate-950 rounded-full h-3.5 flex overflow-hidden border border-slate-700">
+                    <div id="player-shield-bar" class="h-full bg-cyan-400 transition-all duration-200" style="width: 50%;"></div>
+                    <div id="player-hull-bar" class="h-full bg-emerald-500 transition-all duration-200" style="width: 50%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu Modal Screen -->
+    <div id="pause-screen" class="absolute inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md hidden">
+        <div class="max-w-md w-full bg-slate-900 border-2 border-cyan-500/60 rounded-2xl p-6 box-glow-cyan text-center relative">
+            <h2 class="font-orbitron text-3xl font-black text-cyan-300 tracking-wider mb-2 glow-cyan">TACTICAL PAUSE</h2>
+            <p class="text-slate-400 text-xs mb-6">DEFENSE TURRET STANDBY MODE</p>
+            
+            <div class="flex flex-col gap-3">
+                <button id="resume-btn" class="w-full py-3 font-orbitron font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all cursor-pointer">
+                    RESUME OPERATION
+                </button>
+                <button id="pause-menu-btn" class="w-full py-3 font-orbitron font-bold text-cyan-300 border border-cyan-500/50 bg-slate-800 hover:bg-slate-700 rounded-xl transition-all cursor-pointer">
+                    MAIN MENU
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over / Victory Screen -->
+    <div id="game-over-screen" class="absolute inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-lg hidden">
+        <div class="max-w-lg w-full bg-slate-900 border-2 border-red-500/60 rounded-2xl p-8 box-glow-red text-center relative">
+            <h2 id="gameover-title" class="font-orbitron text-4xl font-black text-red-500 tracking-wider mb-2 glow-red">BASE DESTROYED</h2>
+            <p id="gameover-sub" class="text-slate-400 text-sm mb-6">Command Bunker fell to hostile forces.</p>
+
+            <div class="grid grid-cols-2 gap-3 mb-6 text-left">
+                <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-800">
+                    <span class="text-xs text-slate-500 block">FINAL SCORE</span>
+                    <span id="final-score" class="font-orbitron text-2xl font-bold text-cyan-300">0</span>
+                </div>
+                <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-800">
+                    <span class="text-xs text-slate-500 block">TYPING SPEED</span>
+                    <span id="final-wpm" class="font-orbitron text-2xl font-bold text-amber-400">0 WPM</span>
+                </div>
+                <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-800">
+                    <span class="text-xs text-slate-500 block">ACCURACY</span>
+                    <span id="final-acc" class="font-orbitron text-2xl font-bold text-emerald-400">0%</span>
+                </div>
+                <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-800">
+                    <span class="text-xs text-slate-500 block">WAVES CLEARED</span>
+                    <span id="final-waves" class="font-orbitron text-2xl font-bold text-purple-400">0</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button id="restart-btn" class="flex-1 py-3.5 font-orbitron font-bold text-base text-slate-950 bg-gradient-to-r from-red-500 via-amber-400 to-red-400 hover:brightness-110 rounded-xl shadow-lg transition-all cursor-pointer">
+                    REDEPLOY TURRET
+                </button>
+                <button id="gameover-menu-btn" class="flex-1 py-3.5 font-orbitron font-bold text-base text-cyan-300 border border-cyan-500/50 bg-slate-800 hover:bg-slate-700 rounded-xl transition-all cursor-pointer">
+                    MAIN MENU
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) {
+                        this.ctx = new AudioContext();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playKeyClick() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800 + Math.random() * 200, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.05);
+                } catch(e) {}
+            }
+
+            playLaser() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(1200, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(200, this.ctx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.15);
+                } catch(e) {}
+            }
+
+            playExplosion(isLarge = false) {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const dur = isLarge ? 0.6 : 0.3;
+                    const bufferSize = this.ctx.sampleRate * dur;
+                    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    const noise = this.ctx.createBufferSource();
+                    noise.buffer = buffer;
+
+                    const filter = this.ctx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(isLarge ? 400 : 800, this.ctx.currentTime);
+                    filter.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + dur);
+
+                    const gain = this.ctx.createGain();
+                    gain.gain.setValueAtTime(isLarge ? 0.3 : 0.18, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    noise.start();
+                } catch(e) {}
+            }
+
+            playAlarm() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(880, this.ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.25);
+                } catch(e) {}
+            }
+        }
+
+        const audio = new SoundEngine();
+
+        const WORD_BANKS = {
+            easy: ["ABLE","ACID","AGED","ALSO","AREA","ARMY","AWAY","BABY","BACK","BALL","BAND","BANK","BASE","BATH","BEAR","BEAT","BEEN","BEER","BELL","BELT","BEST","BIKE","BIRD","BLUE","BOAT","BODY","BOOK","BORN","BOTH","BUSY","CAKE","CALL","CALM","CAME","CAMP","CARD","CARE","CASE","CASH","CITY","CLUB","COAT","CODE","COLD","COME","COOK","COOL","COPY","COST","DARK","DATA","DATE","DAWN","DEAD","DEAL","DEAR","DEEP","DESK","DOES","DOOR","DOWN","DRAW","DREAM","DROP","EASY","EDGE","ELSE","EVEN","EVER","EVIL","FACE","FACT","FAIL","FAIR","FALL","FARM","FAST","FEAR","FEEL","FEET","FELL","FELT","FILE","FILL","FILM","FIND","FINE","FIRE","FIRM","FISH","FIVE","FLAT","FLOW","FOOD","FOOT","FORM","FREE","FROM","FULL","GAME","GATE","GAVE","GIRL","GIVE","GLAD","GOES","GOLD","GONE","GOOD","GRAY","GREW","GROW","HAIR","HALF","HALL","HAND","HANG","HARD","HATE","HAVE","HEAD","HEAR","HEAT","HELP","HERE","HIGH","HILL","HOME","HOPE","HOUR","HUGE","IDEA","INTO","IRON","ITEM","JOIN","JUMP","JUST","KEEP","KIND","KING","KNEE","KNEW","KNOW","LAKE","LAND","LAST","LATE","LAZY","LEAD","LEFT","LIFE","LIFT","LIKE","LINE","LIST","LIVE","LOCK","LONG","LOOK","LORD","LOSE","LOST","LOVE","LUCK","MADE","MAIL","MAIN","MAKE","MANY","MARK","MEAL","MEAN","MEET","MIND","MISS","MOON","MORE","MOST","MOVE","MUCH","MUST","NAME","NEAR","NECK","NEED","NEWS","NEXT","NICE","NINE","NOSE","NOTE","OPEN","OVER","PAGE","PAIN","PAIR","PARK","PART","PASS","PAST","PATH","PEAK","PICK","PINK","PLACE","PLAN","PLAY","PLUS","RAIN","READ","REAL","REST","RICE","RICH","RIDE","RING","RISE","ROAD","ROCK","ROOM","RULE","SAFE","SAID","SAME","SAVE","SEAT","SEEN","SEEM","SELF","SELL","SEND","SHIP","SHOP","SHOW","SICK","SIDE","SIGN","SING","SITE","SIZE","SKIN","SLOW","SNOW","SOME","SONG","SOON","SORT","STAR","STAY","STEP","STOP","SUCH","SURE","TAKE","TALK","TALL","TEAM","TELL","TERM","TEST","THAN","THAT","THEM","THEN","THEY","THIN","THIS","TIME","TINY","TOLD","TOOK","TOOL","TOWN","TREE","TRUE","TURN","TYPE","UNIT","USED","USER","VERY","VIEW","WAIT","WALK","WALL","WANT","WARM","WASH","WAVE","WAYS","WEAK","WEAR","WEEK","WELL","WENT","WERE","WHAT","WHEN","WHERE","WHICH","WHILE","WHITE","WHOLE","WIDE","WIFE","WILD","WIND","WINE","WING","WISE","WISH","WITH","WORD","WORK","WORLD","WORRY","YEAR","YOUR","ZERO","AFTER","AGAIN","AGENT","AGREE","AHEAD","ALARM","ALBUM","ALIVE","ALLOW","ALONE","ALONG","ANGEL","ANGER","ANGLE","ANGRY","APPLE","APPLY","ARENA","ARGUE","ARISE","ASIDE","AVOID","AWARD","BASIC","BEACH","BEGIN","BEING","BELOW","BIRTH","BLACK","BLAME","BLIND","BLOCK","BLOOD","BOARD","BRAIN","BRAND","BRAVE","BREAD","BREAK","BRIEF","BRING","BROAD","BROWN","BUILD","BUILT","BUYER","CARRY","CATCH","CAUSE","CHAIN","CHAIR","CHART","CHEAP","CHECK","CHIEF","CHILD","CLAIM","CLASS","CLEAN","CLEAR","CLIMB","CLOCK","CLOSE","CLOUD","COACH","COAST","COLOR","COUNT","COURT","COVER","CRASH","CRAZY","CROSS","CROWD","CROWN","DAILY","DANCE","DANGER","DEATH","DELAY","DEPTH","DIRTY","DOUBT","DOZEN","DRAFT","DRAMA","DRESS","DRINK","DRIVE","EARTH","EIGHT","EMPTY","ENEMY","ENJOY","ENTER","ENTRY","EQUAL","ERROR","EVENT","EVERY","EXACT","EXIST","EXTRA","FAITH","FALSE","FANCY","FAULT","FIELD","FIFTH","FINAL","FIRST","FLOOR","FOCUS","FORCE","FRESH","FRONT","FRUIT","FUNNY","GIANT","GIVEN","GLASS","GLOBE","GLORY","GRACE","GRADE","GRAND","GRASS","GREAT","GREEN","GROUP","GUARD","GUESS","GUEST","GUIDE","HAPPY","HEART","HEAVY","HELLO","HUMAN","HURRY","IMAGE","IMPLY","INDEX","INNER","INPUT","ISSUE","JUDGE","JUICE","LARGE","LATER","LAYER","LEARN","LEAST","LEGAL","LEVEL","LIGHT","LIMIT","LOCAL","LUCKY","MAGIC","MAJOR","MATCH","MAYBE","METAL","MIDDLE","MODEL","MONEY","MONTH","MOTOR","MOUSE","MOUTH","MOVIE","MUSIC","NEVER","NOBLE","NOISE","NORTH","OCCUR","OCEAN","OFFER","OFTEN","ORDER","OTHER","OWNER","PAPER","PARTY","PEACE","PHONE","PIECE","PILOT","PLACE","POINT","POWER","PRESS","PRICE","PRIDE","PRIME","PRINT","PRIZE","PROVE","QUEEN","QUICK","QUIET","RADIO","RAISE","RANGE","REACH","READY","REPLY","RIGHT","RIVER","ROUGH","ROUND","ROYAL","SCALE","SCORE","SENSE","SERVE","SEVEN","SHARE","SHARP","SHORT","SIGHT","SINCE","SIXTH","SKILL","SLEEP","SMALL","SMART","SMILE","SOLID","SOUTH","SPACE","SPEAK","SPEED","SPEND","SPORT","STAFF","STAGE","STAND","START","STATE","STEAM","STEEL","STICK","STILL","STOCK","STONE","STORE","STORY","STUDY","STUFF","STYLE","SUGAR","SWEET","TABLE","TEACH","THANK","THEIR","THERE","THESE","THICK","THIRD","THROW","TODAY","TOPIC","TOTAL","TOUCH","TOWER","TRACK","TRADE","TRAIN","TREAT","TRIAL","TRUST","TRUTH","TWICE","UNDER","UNION","UNTIL","UPPER","VALUE","VIDEO","VISIT","VOICE","WASTE","WATCH","WATER","WHEEL","WHOLE","WHOSE","WOMAN","YOUNG","YOUTH"],
+            medium:["ABOUT","ABOVE","ABUSE","ACTOR","ACUTE","ADMIT","ADOPT","ADULT","AFTER","AGAIN","AGENT","AGREE","AHEAD","ALARM","ALBUM","ALERT","ALIKE","ALIVE","ALLOW","ALONE","ALONG","ALTER","AMONG","ANGER","ANGLE","ANGRY","APART","APPLE","APPLY","ARENA","ARGUE","ARISE","ARMOR","AROSE","ARRAY","ASIDE","ASSET","AUDIO","AUDIT","AVOID","AWARD","AWARE","AWFUL","BACON","BADGE","BADLY","BASIC","BASIN","BASIS","BATCH","BEACH","BEARD","BEAST","BEGIN","BEING","BELLY","BELOW","BENCH","BERRY","BIRTH","BLACK","BLADE","BLAME","BLANK","BLAST","BLEND","BLESS","BLIND","BLOCK","BLOOD","BLOOM","BLOWN","BOARD","BOAST","BONUS","BOOST","BOOTH","BOUND","BRAIN","BRAND","BRAVE","BREAD","BREAK","BREED","BRIEF","BRING","BROAD","BROKE","BROWN","BRUSH","BUILD","BUILT","BUYER","CABIN","CABLE","CANDY","CARRY","CATCH","CAUSE","CEDAR","CHAIN","CHAIR","CHALK","CHAMP","CHARM","CHART","CHASE","CHEAP","CHECK","CHEEK","CHESS","CHEST","CHIEF","CHILD","CHINA","CHOSE","CIVIC","CIVIL","CLAIM","CLASS","CLEAN","CLEAR","CLERK","CLICK","CLIMB","CLOCK","CLOSE","CLOUD","COACH","COAST","COLOR","COMIC","COUGH","COULD","COUNT","COURT","COVER","CRACK","CRAFT","CRASH","CRAZY","CREAM","CREEK","CRIME","CROSS","CROWD","CROWN","CRUSH","CURVE","CYCLE","DAILY","DANCE","DEALT","DEATH","DEBUT","DELAY","DEPTH","DEVIL","DIARY","DIRTY","DOUBT","DOZEN","DRAFT","DRAIN","DRAMA","DREAM","DRESS","DRINK","DRIVE","DROVE","DYING","EAGER","EARLY","EARTH","EIGHT","ELECT","ELITE","EMPTY","ENJOY","ENTER","ENTRY","EQUAL","ERROR","EVENT","EVERY","EXACT","EXIST","EXTRA","FAITH","FALSE","FAULT","FAVOR","FEAST","FENCE","FETCH","FEVER","FIFTH","FIFTY","FIGHT","FINAL","FIRST","FLAME","FLASH","FLEET","FLESH","FLOAT","FLOOD","FLOOR","FLOUR","FLUID","FOCUS","FORCE","FORGE","FORTH","FORTY","FOUND","FRAME","FRESH","FRONT","FRUIT","FULLY","FUNNY","GIANT","GIVEN","GLASS","GLOBE","GLORY","GRACE","GRADE","GRAIN","GRAND","GRANT","GRASS","GREAT","GREEN","GREET","GRIEF","GRIND","GROSS","GROUP","GUARD","GUESS","GUEST","GUIDE","HABIT","HAPPY","HARSH","HEART","HEAVY","HELLO","HENCE","HONEY","HORSE","HOTEL","HOUSE","HUMAN","HUMOR","IDEAL","IMAGE","IMPLY","INDEX","INDIE","INNER","INPUT","INTRO","ISSUE","IVORY","JAPAN","JOINT","JUDGE","JUICE","JUICY","KNIFE","KNOCK","KNOWN","LABEL","LARGE","LASER","LATER","LAUGH","LAYER","LEARN","LEASE","LEAST","LEAVE","LEGAL","LEMON","LEVEL","LIGHT","LIMIT","LOCAL","LOGIC","LOOSE","LUCKY","LUNCH","MAGIC","MAJOR","MAKER","MANOR","MARCH","MATCH","MAYBE","MAYOR","MEDAL","MEDIA","MERCY","MERGE","METAL","METER","MIGHT","MINOR","MINUS","MIXED","MODEL","MONEY","MONTH","MORAL","MOTOR","MOUNT","MOUSE","MOUTH","MOVIE","MUSIC","NAIVE","NASTY","NAVAL","NERVE","NEVER","NEWLY","NIGHT","NINTH","NOISE","NORTH","NOTED","NOVEL","NURSE","OCCUR","OCEAN","OFFER","OFTEN","OLIVE","ONION","OPERA","ORBIT","ORDER","OTHER","OUGHT","OUTER","OWNER","PAINT","PANEL","PAPER","PARTY","PEACE","PEACH","PHASE","PHONE","PHOTO","PIANO","PIECE","PILOT","PITCH","PLACE","PLAIN","PLANE","PLANT","PLATE","POINT","POUND","POWER","PRESS","PRICE","PRIDE","PRIME","PRINT","PRIOR","PRIZE","PROOF","PROUD","PROVE","QUEEN","QUICK","QUIET","QUITE","RADIO","RAISE","RANGE","RAPID","RATIO","REACH","REACT","READY","REALM","REFER","RELAX","REPLY","RIGHT","RIVAL","RIVER","ROUGH","ROUND","ROUTE","ROYAL","RURAL","SALAD","SCALE","SCENE","SCOPE","SCORE","SENSE","SERVE","SEVEN","SHADE","SHAKE","SHALL","SHAPE","SHARE","SHARP","SHEEP","SHEET","SHELF","SHELL","SHIFT","SHIRT","SHOCK","SHOOT","SHORT","SHOWN","SIGHT","SINCE","SIXTH","SIXTY","SKILL","SLEEP","SLICE","SLIDE","SMALL","SMART","SMILE","SMOKE","SNAKE","SOLAR","SOLID","SOLVE","SORRY","SOUND","SOUTH","SPACE","SPARE","SPEAK","SPEED","SPELL","SPEND","SPENT","SPLIT","SPORT","STAFF","STAGE","STAND","START","STATE","STEAM","STEEL","STICK","STILL","STOCK","STONE","STOOD","STORE","STORM","STORY","STRIP","STUDY","STUFF","STYLE","SUGAR","SUITE","SUPER","SWEET","TABLE","TASTE","TEACH","TEETH","THANK","THEME","THERE","THESE","THICK","THING","THINK","THIRD","THOSE","THREE","THROW","TIGHT","TITLE","TODAY","TOPIC","TOTAL","TOUCH","TOUGH","TOWER","TRACK","TRADE","TRAIN","TREAT","TREND","TRIAL","TRIBE","TRICK","TRUCK","TRULY","TRUST","TRUTH","TWICE","UNDER","UNION","UNITE","UNTIL","UPPER","URBAN","USAGE","USUAL","VALUE","VIDEO","VIRUS","VISIT","VITAL","VOICE","WASTE","WATCH","WATER","WHEEL","WHERE","WHICH","WHILE","WHITE","WHOLE","WHOSE","WOMAN","WORLD","WORRY","WORTH","WOULD","WRITE","WRONG","YOUNG","YOUTH","ZEBRA"],
+            hard: ["ABILITY","ACCOUNT","ACHIEVE","ACQUIRE","ADDRESS","ADVANCE","ADVISER","AGAINST","AIRLINE","AIRPORT","ALCOHOL","ALGEBRA","ALLERGY","ALREADY","ALMANAC","ANALYZE","ANATOMY","ANCIENT","ANOTHER","ANXIETY","APOLOGY","APPAREL","APPOINT","APPROVE","ARCHIVE","ARRANGE","ARRIVAL","ARTICLE","ARTISAN","ASHAMED","ASPECTS","ASSAULT","ASSEMBLY","ASSERT","ASSIGN","ASSIST","ASSUME","ASSURE","ATHLETE","ATOMICS","ATTEMPT","ATTRACT","AUCTION","AUDITOR","AVERAGE","BALANCE","BANDAGE","BANKING","BARGAIN","BARRIER","BASELINE","BATTERY","BEDROOM","BELIEVE","BENEFIT","BETWEEN","BIOLOGY","BLANKET","BLEEDING","BLESSING","BLOSSOM","BOARDING","BOLSTER","BOOKLET","BOULDER","BOUNDARY","BRAVERY","BREATHE","BREWING","BRIDEGROOM","BRIGADE","BROADEN","BUILDER","BULLETIN","BURGLAR","BURNING","BUSINESS","CABINET","CALORIE","CAMPAIGN","CAPACITY","CAPITAL","CAPTAIN","CAPTION","CAPTURE","CARDIAC","CAREFUL","CARAVAN","CARRIER","CASCADE","CASTING","CASUALTY","CATALOG","CATERER","CAUTION","CEILING","CELLULAR","CENSOR","CENTURY","CERTAIN","CHAMBER","CHAMPION","CHANNEL","CHAPTER","CHARGER","CHARITY","CHARMING","CHARTER","CHASSID","CHEATING","CHECKER","CHEMICAL","CHEQUE","CHICKEN","CHICORY","CHIMNEY","CHRONIC","CIRCUIT","CITIZEN","CLARITY","CLASSIC","CLEANER","CLIMATE","CLIMBING","CLOSURE","CLOTHING","CLOVER","CLUSTER","COASTAL","COCKTAIL","COLLAGEN","COLLECT","COLLEGE","COMBINE","COMEDY","COMFORT","COMMAND","COMMENT","COMPANY","COMPARE","COMPASS","COMPEL","COMPETE","COMPLEX","COMPLY","COMPOSE","COMPUTE","CONCEPT","CONCERN","CONCERT","CONCLUDE","CONCRETE","CONDUCT","CONFIRM","CONNECT","CONSENT","CONSIST","CONTACT","CONTAIN","CONTENT","CONTEST","CONTEXT","CONTROL","CONVERT","CONVICT","COOKING","COOKING","COOLING","CORRIDOR","COTTAGE","COUNCIL","COUNSEL","COUNTER","COUNTRY","COURAGE","COURIER","COVERAGE","CRAFTSMAN","CRANBERRY","CREATIVE","CREDITOR","CREATURE","CRIMINAL","CRITICAL","CROSSING","CRUCIAL","CRUELTY","CRYSTAL","CULTURE","CURTAIN","CUSHION","CUSTOMS","CYCLING","DANCING","DANGEROUS","DARKNESS","DATABASE","DAYLIGHT","DAYTIME","DEADLY","DEALER","DEBATER","DECADE","DECIMAL","DECLARE","DECLINE","DECODER","DECOR","DECREASE","DEDICATE","DEFAULT","DEFENSE","DEFICIT","DEFINITE","DELIVER","DEMOCRAT","DENSITY","DEPOSIT","DEPRESS","DEPTHS","DEPUTY","DERBY","DERIVED","DESERVE","DESIGN","DESIRE","DESKTOP","DESPAIR","DESPITE","DESTROY","DETACH","DETAIL","DETECT","DEVELOP","DEVIOUS","DEVICE","DIAGRAM","DIALOGUE","DIAMOND","DICTATOR","DIETARY","DIGITAL","DIGNITY","DILEMMA","DIPLOMAT","DIRECTOR","DISABLE","DISASTER","DISCOUNT","DISCOVER","DISCUSS","DISEASE","DISLIKE","DISPLAY","DISPOSE","DISPUTE","DISTANCE","DISTINCT","DISTRESS","DISTRICT","DIVERSE","DIVIDE","DIVORCE","DOCTRINE","DOCUMENT","DOLPHIN","DOMESTIC","DOMINANT","DOORSTEP","DOORWAY","DOWNLOAD","DRAMATIC","DRAWING","DRIFT","DRIVING","DROPOUTS","DRYER","DUBIOUS","DURATION","DUSTBIN","DYNAMIC","EAGERLY","EARNEST","EARNINGS","EARRING","EARTHQUAKE","EASTERN","ECONOMY","EDITION","EDUCATE","EFFECTS","EFFORTS","EIGHTH","ELAPSED","ELASTIC","ELBOWS","ELDERLY","ELECT","ELEMENT","ELLIPSE","EMBARGO","EMBASSY","EMBRACE","EMERALD","EMERGE","EMISSION","EMOTION","EMPEROR","EMPHASIS","EMPIRE","EMPLOYER","EMPLOYEE","EMULATE","ENCHANT","ENCLOSE","ENCODE","ENCOURAGES","ENDORSE","ENDPOINT","ENEMY","ENFORCE","ENGAGE","ENGINE","ENGRAVE","ENHANCE","ENLARGE","ENORMOUS","ENQUIRE","ENRICH","ENSEMBLE","ENTROPY","ENVELOPE","ENVIRONMENT","EPISODE","EPITOME","EQUALIZER","EQUATOR","EQUIPPED","EQUITY","ERA","ERASURE","EROSION","ESCAPES","ESSENCE","ESTATE","ESTEEM","ETERNAL","ETHICAL","EVACUATE","EVALUATOR","EVENING","EVIDENT","EVIDENT","EXACT","EXAMINE","EXAMPLE","EXCERPT","EXCLAIM","EXCLUDE","EXCUSE","EXECUTE","EXHIBIT","EXILE","EXITING","EXOTIC","EXPAND","EXPECT","EXPENSE","EXPERT","EXPLAIN","EXPLICIT","EXPLORE","EXPLOIT","EXPRESS","EXTEND","EXTREME","EYEBROW","EYESIGHT","FABRIC","FACTORY","FACULTY","FAILURE","FAIRWAY","FAITH","FALCON","FALSIFY","FAMILY","FAMINE","FANTASIES","FARMER","FASHION","FASTEN","FAVORABLE","FEATHER","FEATURE","FEDERAL","FEELING","FELINE","FELLOW","FEMININE","FESTIVAL","FICTION","FIFTEEN","FIGHTER","FIGURINE","FILE","FILTER","FINANCE","FINDING","FINGER","FINISH","FIREARM","FIREMAN","FIREWALL","FIREWORK","FIRMWARE","FISHING","FITNESS","FIXTURE","FLAGSHIP","FLAMINGO","FLANNEL","FLASHLIGHT","FLATWARE","FLAVOR","FLEETNESS","FLEXING","FLICKER","FLIGHT","FLOATING","FLORAL","FLORIST","FLOWER","FLUTTER","FLYER","FLYWHEEL","FOOLISH","FOOTAGE","FOOTBALL","FOOTNOTE","FOOTWEAR","FOREHEAD","FOREIGN","FORENSIC","FORESEE","FOREST","FOREVER","FORGIVE","FORMAL","FORMULA","FORSAKE","FORTUNE","FORWARD","FOSSILS","FOUNDER","FRACTION","FRACTURE","FRAGILE","FRAGRANCE","FRAMEWORK","FRANTIC","FREEDOM","FREEWAY","FREIGHT","FRESHMAN","FRICTION","FRIEND","FRIGATE","FRISK","FRIVOLOUS","FRONTIER","FROSTING","FRUIT","FRUSTRATE","FULFIL","FUNERAL","FUNGUS","FURNACE","FURNISH","FURNITURE","FURTHER","FURTIVE","FUTURES","GAINFUL","GALLENE","GALLERY","GALLONS","GALVANIZE","GAMBLING","GAMEPLAY","GAP","GARBAGE","GARDENER","GARLAND","GARMENT","GARNET","GASOLINE","GATEWAY","GATHER","GAUNTLET","GENERAL","GENERIC","GENEROUS","GENESIS","GENETICS","GENTLE","GENUINE","GEOMETRY","GESTURE","GHOSTLY","GIGABYTE","GIRAFFE","GLACIAL","GLACIER","GLAMOUR","GLASSWARE","GLIMPSE","GLITTER","GLIMPSE","GLOOMY", "PARANOID", "UNCANNY"],
+            bossPhrases: ["ACTION CURES FEAR AND DOUBT","ALWAYS CHOOSE GROWTH OVER COMFORT","BE THE CHANGE YOU SEEK","BEAUTY LIVES IN SIMPLE THINGS","BEGIN BEFORE YOU FEEL READY","BELIEVE IN YOUR OWN POWER","BOLD ACTIONS DEFINE YOUR FUTURE","BREATHE DEEPLY AND LET GO","BUILD MOMENTUM STEP BY STEP","BUILD THE LIFE YOU IMAGINE","CHALLENGE EVERY LIMIT YOU SET","CHANGE YOUR FOCUS, CHANGE LIFE","CHARITY BEGINS IN SMALL ACTS","CLARITY COMES THROUGH DECISIVE ACTION","CONSISTENCY BEATS TALENT EVERY TIME","CONTINUOUS EFFORT UNLOCKS YOUR POTENTIAL","COURAGE BEGINS WITH ONE STEP","CREATE BEAUTY OUT OF CHAOS","CURIOSITY FUELS CONTINUOUS LIFELONG LEARNING","DARE TO REACH BEYOND LIMITS","DISCIPLINE CREATES ABSOLUTE PERSONAL FREEDOM","DO THINGS WITH FULL DEVOTION","DONE IS BETTER THAN PERFECT","DREAM BIG AND ACT NOW","EMBRACE EVERY SEASON OF LIFE","EMBRACE THE UNKNOWN WITH CONFIDENCE","EVERY MOMENT HOLDS NEW POTENTIAL","EVERY OBSTACLE IS AN OPPORTUNITY","EVERY SMALL STEP MATTERS","FAILURE IS JUST VALUABLE FEEDBACK","FIND STRENGTH IN QUIET MOMENTS","FOCUS ON WHAT YOU CONTROL","FORGIVE QUICKLY AND MOVE FORWARD","FORTUNE FAVORS THE BRAVE SOUL","GENEROSITY ENRICHES THE HUMAN SPIRIT","GIVE YOUR BEST EFFORT DAILY","GRATITUDE TRANSFORMS EVERY ORDINARY DAY","GREAT THINGS TAKE TIME TO GROW","HARD WORK YIELDS SWEET REWARDS","HONESTY BUILDS UNBREAKABLE TRUST","HOPE ILLUMINATES THE DARKEST PATHS","HUMILITY MAKES A GREAT LEADER","INSPIRATION LIES EVERYWHERE AROUND US","INTEGRITY DEFINES YOUR TRUE CHARACTER","JOY IS FOUND IN GIVING","KEEP MOVING FORWARD NO MATTER WHAT","KINDNESS COSTS NOTHING AT ALL","KINDNESS CREATES ENDLESS RIPPLE EFFECTS","LEAD BY EXAMPLE EVERY DAY","LEAN INTO LIFE'S DIFFICULT CHALLENGES","LEARN SOMETHING NEW EVERY DAY","LISTEN MORE THAN YOU SPEAK","LITTLE ACTS MAKE BIG DIFFERENCES","LIVE WITH PURPOSE AND PASSION","LOVE DEEPLY WITHOUT HOLDING BACK","MAKE EACH DAY YOUR MASTERPIECE","MAKE SPACE FOR QUIET MOMENTS","MASTER YOUR MIND, MASTER LIFE","NEVER LET FEAR DICTATE CHOICES","NEVER LOSE YOUR INNER SPARK","NURTURE YOUR MIND WITH WISDOM","ONE DAY AT A TIME","PATIENCE YIELDS THE FINEST FRUIT","PEACE STARTS FROM DEEP WITHIN","PERSISTENCE TURNS DREAMS INTO REALITY","PRACTICE PATIENCE IN ALL THINGS","PRESENCE IS THE BEST GIFT","PROTECT YOUR INNER PEACE DAILY","PURSUE EXCELLENCE IN EVERY DETAIL","QUIET CONFIDENCE SPEAKS THE LOUDEST","RADIATE WARMTH AND POSITIVE VIBES","RISE ABOVE THE TEMPORARY NOISE","SEE BEAUTY IN THE CHAOS","SEEK WISDOM IN EVERYDAY EXPERIENCES","SILENCE HOLDS POWERFUL INNER ANSWERS","SIMPLICITY IS THE ULTIMATE SOPHISTICATION","SMALL DAILY WINS COMPOUND OVER TIME","STAY TRUE TO YOUR VALUES","STRENGTH GROWS IN HARD MOMENTS","STRIVE FOR CONTINUOUS PERSONAL GROWTH","SUCCESS DEMANDS DAILY HARD WORK","THE FUTURE BELONGS TO BELIEVERS","THE JOURNEY IS THE REWARD","THE PRESENT MOMENT IS SACRED","THINK DEEPLY BEFORE YOU ACT","TIME HEALS EVERY DEEP WOUND","TRUST THE TIMING OF LIFE","TURN EVERY TRIAL INTO TRIUMPH","TURN YOUR PASSION INTO PURPOSE","VALUE RELATIONSHIPS OVER MATERIAL THINGS","VICTORY BELONGS TO THE PERSISTENT","WISDOM COMES FROM THOUGHTFUL REFLECTION","WISDOM BEGINS WITH HUMBLE CURIOSITY","WORK HARD IN TOTAL SILENCE","YOU ARE STRONGER THAN YOU THINK","YOUR ATTITUDE DETERMINES YOUR DIRECTION","YOUR POTENTIAL IS TRULY LIMITLESS","YOUR TIME IS PRECIOUS, SPEND WISELY","YOUR VISION WILL BECOME CLEAR","ZEAL TURNS DREAMS INTO REALITY", "SUPERCALIFRAGILISTICEXPIALIDOCIOUS", "PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS"]
+        };
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let gameState = 'MENU'; // MENU, PLAYING, PAUSED, GAMEOVER
+        let selectedDifficulty = 'MEDIUM';
+        let score = 0;
+        let wave = 1;
+        let totalTypedChars = 0;
+        let correctTypedChars = 0;
+        let startTime = 0;
+        let combo = 1;
+        let currentInput = "";
+        let currentTargetId = null;
+
+        // Player Base Properties
+        let playerShield = 100;
+        let playerHull = 100;
+
+        // Active Powerups
+        let freezeTimer = 0;
+
+        // Entities Lists
+        let enemies = [];
+        let particles = [];
+        let lasers = [];
+
+        // Wave Spawn Controller State
+        let waveEnemiesToSpawn = [];
+        let spawnInterval = 2000;
+        let lastSpawnTime = 0;
+        let activeBoss = null;
+
+        class Enemy {
+            constructor(type, x, y, word, maxTime) {
+                this.type = type; // 'infantry', 'drone', 'tank', 'subboss', 'boss'
+                this.x = x;
+                this.y = y;
+                this.word = word;
+                this.maxTime = maxTime;
+                this.timer = maxTime;
+                this.id = Math.random().toString(36).substring(2, 9);
+                
+                // Visual Dimensions
+                this.radius = type === 'boss' ? 70 : (type === 'subboss' ? 45 : 28);
+                this.color = type === 'boss' ? '#ef4444' : (type === 'subboss' ? '#f59e0b' : (type === 'tank' ? '#3b82f6' : '#22d3ee'));
+                
+                // Armor / Words Sequence for Heavy Units
+                this.wordList = Array.isArray(word) ? word : [word];
+                this.currentWordIndex = 0;
+                this.activeWord = this.wordList[0];
+                this.maxHp = this.wordList.length;
+                this.hp = this.maxHp;
+            }
+
+            update(dt) {
+                if (freezeTimer > 0) {
+                    this.timer -= dt * 0.3; // 70% slowdown on freeze
+                } else {
+                    this.timer -= dt;
+                }
+            }
+
+            draw(ctx) {
+                const ratio = Math.max(0, this.timer / this.maxTime);
+
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                // Outer Timer Ring
+                ctx.beginPath();
+                ctx.arc(0, 0, this.radius + 6, -Math.PI / 2, (-Math.PI / 2) + (Math.PI * 2 * ratio));
+                ctx.strokeStyle = ratio < 0.3 ? '#ef4444' : this.color;
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                // Unit Base Shape
+                ctx.beginPath();
+                if (this.type === 'drone') {
+                    // Diamond Shape
+                    ctx.moveTo(0, -this.radius);
+                    ctx.lineTo(this.radius, 0);
+                    ctx.lineTo(0, this.radius);
+                    ctx.lineTo(-this.radius, 0);
+                } else if (this.type === 'tank' || this.type === 'subboss') {
+                    // Octagon Shape
+                    const r = this.radius;
+                    ctx.moveTo(r*0.5, -r); ctx.lineTo(r, -r*0.5);
+                    ctx.lineTo(r, r*0.5); ctx.lineTo(r*0.5, r);
+                    ctx.lineTo(-r*0.5, r); ctx.lineTo(-r, r*0.5);
+                    ctx.lineTo(-r, -r*0.5); ctx.lineTo(-r*0.5, -r);
+                } else if (this.type === 'boss') {
+                    // Mech Fortress Circle
+                    ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                } else {
+                    // Circle Infantry
+                    ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                }
+                ctx.fillStyle = '#0f172a';
+                ctx.fill();
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Multi-tier Armor HP Indicator
+                if (this.maxHp > 1) {
+                    ctx.fillStyle = '#e2e8f0';
+                    ctx.font = 'bold 10px Orbitron';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`ARMOR: ${this.hp}/${this.maxHp}`, 0, -this.radius - 12);
+                }
+
+                ctx.restore();
+
+                // Target Typing Word Rendering
+                this.drawWord(ctx);
+            }
+
+            drawWord(ctx) {
+                const word = this.activeWord;
+                ctx.font = `bold ${this.type === 'boss' ? '18px' : '15px'} 'Share Tech Mono', monospace`;
+                
+                const totalWidth = ctx.measureText(word).width;
+                const padding = 12;
+                const badgeWidth = totalWidth + (padding * 2);
+                const badgeHeight = 28;
+
+                let badgeX = this.x - (badgeWidth / 2);
+                let badgeY = this.y + this.radius + 8;
+
+                badgeX = Math.max(16, Math.min(canvas.width - badgeWidth - 16, badgeX));
+            badgeY = Math.max(140, Math.min(canvas.height - 110, badgeY));
+
+            let matchLength = 0;
+                if (currentTargetId === this.id && currentInput.length > 0 && word.startsWith(currentInput)) {
+                    matchLength = currentInput.length;
+                }
+
+                const matchedText = word.substring(0, matchLength);
+                const remainingText = word.substring(matchLength);
+
+                // Word background badge box
+                ctx.fillStyle = 'rgba(3, 7, 18, 0.9)';
+                ctx.fillRect(badgeX, badgeY, badgeWidth, badgeHeight);
+                ctx.strokeStyle = matchLength > 0 ? '#22c55e' : 'rgba(34, 211, 238, 0.5)';
+                ctx.lineWidth = matchLength > 0 ? 2 : 1;
+                ctx.strokeRect(badgeX, badgeY, badgeWidth, badgeHeight);
+
+                let currentX = badgeX + padding;
+                const textY = badgeY + 19;
+                ctx.textAlign = 'left';
+
+                if (matchedText.length > 0) {
+                    ctx.fillStyle = '#22c55e';
+                    ctx.fillText(matchedText, currentX, textY);
+                    currentX += ctx.measureText(matchedText).width;
+                }
+                if (remainingText.length > 0) {
+                    ctx.fillStyle = '#06b6d4';
+                    ctx.fillText(remainingText, currentX, textY);
+                }
+            }
+        }
+
+        class Laser {
+            constructor(startX, startY, targetX, targetY, color = '#22d3ee') {
+                this.startX = startX;
+                this.startY = startY;
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.progress = 0;
+                this.color = color;
+            }
+
+            update(dt) {
+                this.progress += dt * 5;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(this.startX, this.startY);
+                const currentX = this.startX + (this.targetX - this.startX) * Math.min(1, this.progress);
+                const currentY = this.startY + (this.targetY - this.startY) * Math.min(1, this.progress);
+                ctx.lineTo(currentX, currentY);
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 4;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 10;
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.vx = (Math.random() - 0.5) * 8;
+                this.vy = (Math.random() - 0.5) * 8;
+                this.life = 1.0;
+                this.decay = 0.02 + Math.random() * 0.03;
+                this.size = Math.random() * 4 + 2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= this.decay;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.life);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function createExplosion(x, y, color = '#f59e0b', count = 25) {
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function generateWave(waveNum) {
+            waveEnemiesToSpawn = [];
+            const isBossWave = waveNum % 5 === 0;
+            const isSubBossWave = waveNum % 3 === 0 && !isBossWave;
+
+            let difficultyMultiplier = 1;
+            if (selectedDifficulty === 'EASY') difficultyMultiplier = 1.3;
+            if (selectedDifficulty === 'HARD') difficultyMultiplier = 0.8;
+            if (selectedDifficulty === 'VETERAN') difficultyMultiplier = 0.65;
+
+            if (isBossWave) {
+                const bossPhrases = WORD_BANKS.bossPhrases;
+                const selectedPhrase = bossPhrases[Math.floor(Math.random() * bossPhrases.length)];
+                const words = selectedPhrase.split(' ');
+                
+                waveEnemiesToSpawn.push({
+                    type: 'boss',
+                    words: words,
+                    timer: (12 + words.length * 2.5) * difficultyMultiplier
+                });
+                
+                for (let i = 0; i < 3; i++) {
+                    waveEnemiesToSpawn.push({
+                        type: 'drone',
+                        words: [getRandomWord('easy')],
+                        timer: 6 * difficultyMultiplier
+                    });
+                }
+            } else if (isSubBossWave) {
+                const words = [getRandomWord('medium'), getRandomWord('medium'), getRandomWord('hard')];
+                waveEnemiesToSpawn.push({
+                    type: 'subboss',
+                    words: words,
+                    timer: 14 * difficultyMultiplier
+                });
+            } else {
+                const count = 4 + waveNum * 2;
+                for (let i = 0; i < count; i++) {
+                    const r = Math.random();
+                    if (r < 0.5) {
+                        waveEnemiesToSpawn.push({
+                            type: 'infantry',
+                            words: [getRandomWord('easy')],
+                            timer: (6 + Math.random() * 2) * difficultyMultiplier
+                        });
+                    } else if (r < 0.8) {
+                        waveEnemiesToSpawn.push({
+                            type: 'drone',
+                            words: [getRandomWord('medium')],
+                            timer: (5 + Math.random() * 2) * difficultyMultiplier
+                        });
+                    } else {
+                        waveEnemiesToSpawn.push({
+                            type: 'tank',
+                            words: [getRandomWord('medium'), getRandomWord('hard')],
+                            timer: (9 + Math.random() * 3) * difficultyMultiplier
+                        });
+                    }
+                }
+            }
+
+            spawnInterval = Math.max(800, 2500 - (waveNum * 150));
+        }
+
+        function getRandomWord(category) {
+            const list = WORD_BANKS[category];
+            return list[Math.floor(Math.random() * list.length)].toUpperCase();
+        }
+
+        function spawnEnemyFromQueue() {
+            if (waveEnemiesToSpawn.length === 0) return;
+            const item = waveEnemiesToSpawn.shift();
+
+            // Clamped strictly between Top HUD (y >= 140) and Bottom HUD Status Bar (y <= height - 120)
+            const minX = 80;
+            const maxX = Math.max(minX + 100, canvas.width - 120);
+            const minY = 140;
+            const maxY = Math.max(minY + 60, canvas.height - 130);
+
+            const x = minX + Math.random() * (maxX - minX);
+            const y = minY + Math.random() * (maxY - minY);
+
+            const enemy = new Enemy(item.type, x, y, item.words, item.timer);
+            enemies.push(enemy);
+
+            if (item.type === 'boss') {
+                activeBoss = enemy;
+                document.getElementById('boss-hud').classList.remove('hidden');
+                document.getElementById('boss-title').innerText = "STAGE BOSS - HEAVY WARMACHINE";
+                audio.playAlarm();
+            } else if (item.type === 'subboss') {
+                audio.playAlarm();
+            }
+        }
+
+        function handleKeyInput(char) {
+            if (gameState !== 'PLAYING') return;
+
+            audio.playKeyClick();
+            totalTypedChars++;
+
+            const testInput = (currentInput + char).toUpperCase();
+
+            // Powerup Commands
+            if (testInput === "NUKE") {
+                triggerNuke();
+                resetInputState();
+                return;
+            }
+            if (testInput === "FREEZE") {
+                triggerFreeze();
+                resetInputState();
+                return;
+            }
+            if (testInput === "SHIELD" || testInput === "REPAIR") {
+                triggerRepair();
+                resetInputState();
+                return;
+            }
+
+            let matchedEnemy = null;
+
+            if (currentTargetId) {
+                const target = enemies.find(e => e.id === currentTargetId);
+                if (target && target.activeWord.startsWith(testInput)) {
+                    matchedEnemy = target;
+                }
+            }
+
+            if (!matchedEnemy) {
+                for (let enemy of enemies) {
+                    if (enemy.activeWord.startsWith(testInput)) {
+                        matchedEnemy = enemy;
+                        currentTargetId = enemy.id;
+                        break;
+                    }
+                }
+            }
+
+            if (matchedEnemy) {
+                correctTypedChars++;
+                currentInput = testInput;
+
+                if (currentInput === matchedEnemy.activeWord) {
+                    lasers.push(new Laser(canvas.width / 2, canvas.height - 50, matchedEnemy.x, matchedEnemy.y));
+                    audio.playLaser();
+
+                    matchedEnemy.currentWordIndex++;
+                    matchedEnemy.hp--;
+
+                    if (matchedEnemy.currentWordIndex < matchedEnemy.wordList.length) {
+                        matchedEnemy.activeWord = matchedEnemy.wordList[matchedEnemy.currentWordIndex];
+                        createExplosion(matchedEnemy.x, matchedEnemy.y, '#f59e0b', 10);
+                        currentInput = "";
+                    } else {
+                        destroyEnemy(matchedEnemy);
+                        resetInputState();
+                    }
+
+                    combo++;
+                    score += 100 * combo;
+                }
+            } else {
+                combo = 1;
+                resetInputState();
+            }
+
+            updateInputUI();
+            updateHUDStats();
+        }
+
+        function resetInputState() {
+            currentInput = "";
+            currentTargetId = null;
+            updateInputUI();
+        }
+
+        function destroyEnemy(enemy) {
+            createExplosion(enemy.x, enemy.y, enemy.color, enemy.type === 'boss' ? 50 : 20);
+            audio.playExplosion(enemy.type === 'boss' || enemy.type === 'subboss');
+
+            if (enemy.id === currentTargetId) {
+                resetInputState();
+            }
+
+            if (enemy === activeBoss) {
+                activeBoss = null;
+                document.getElementById('boss-hud').classList.add('hidden');
+            }
+
+            enemies = enemies.filter(e => e.id !== enemy.id);
+        }
+
+        function enemyAttack(enemy) {
+            audio.playExplosion(true);
+            document.body.classList.add('screen-shake');
+            setTimeout(() => document.body.classList.remove('screen-shake'), 350);
+
+            let damage = 20;
+            if (enemy.type === 'tank') damage = 30;
+            if (enemy.type === 'subboss') damage = 45;
+            if (enemy.type === 'boss') damage = 65;
+
+            if (playerShield > 0) {
+                playerShield -= damage;
+                if (playerShield < 0) {
+                    playerHull += playerShield;
+                    playerShield = 0;
+                }
+            } else {
+                playerHull -= damage;
+            }
+
+            if (playerHull <= 0) {
+                playerHull = 0;
+                endGame(false);
+            }
+
+            destroyEnemy(enemy);
+            updateHUDStats();
+        }
+
+        function triggerNuke() {
+            audio.playExplosion(true);
+            createExplosion(canvas.width / 2, canvas.height / 2, '#ef4444', 100);
+            enemies.forEach(e => createExplosion(e.x, e.y, e.color, 25));
+            enemies = [];
+            activeBoss = null;
+            document.getElementById('boss-hud').classList.add('hidden');
+            score += 500;
+        }
+
+        function triggerFreeze() {
+            freezeTimer = 6;
+            const perk = document.getElementById('perk-freeze');
+            if (perk) {
+                perk.classList.replace('text-cyan-500/40', 'text-cyan-300');
+                perk.classList.add('glow-cyan');
+            }
+        }
+
+        function triggerRepair() {
+            playerShield = Math.min(100, playerShield + 40);
+            playerHull = Math.min(100, playerHull + 25);
+            audio.playAlarm();
+        }
+
+        function updateInputUI() {
+            const bufferElem = document.getElementById('input-buffer');
+            if (bufferElem) bufferElem.innerText = currentInput;
+        }
+
+        function updateHUDStats() {
+            document.getElementById('score-val').innerText = score;
+            document.getElementById('combo-val').innerText = `x${combo}`;
+            document.getElementById('wave-counter').innerText = `WAVE ${wave}`;
+
+            const elapsedMinutes = Math.max(0.05, (Date.now() - startTime) / 60000);
+            const wpm = Math.round((correctTypedChars / 5) / elapsedMinutes);
+            const accuracy = totalTypedChars > 0 ? Math.round((correctTypedChars / totalTypedChars) * 100) : 100;
+
+            document.getElementById('wpm-val').innerText = wpm;
+            document.getElementById('acc-val').innerText = `${accuracy}%`;
+
+            document.getElementById('player-shield-bar').style.width = `${Math.max(0, playerShield / 2)}%`;
+            document.getElementById('player-hull-bar').style.width = `${Math.max(0, playerHull / 2)}%`;
+            document.getElementById('player-hp-text').innerText = `SHIELD: ${Math.round(playerShield)}% | HULL: ${Math.round(playerHull)}%`;
+
+            if (activeBoss) {
+                const ratio = Math.max(0, (activeBoss.hp / activeBoss.maxHp) * 100);
+                document.getElementById('boss-hp-bar').style.width = `${ratio}%`;
+                document.getElementById('boss-hp-text').innerText = `${activeBoss.hp}/${activeBoss.maxHp}`;
+            }
+        }
+
+        let lastTime = performance.now();
+
+        function gameLoop(now) {
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawTurretBase(ctx);
+
+            if (gameState === 'PLAYING') {
+                if (freezeTimer > 0) {
+                    freezeTimer -= dt;
+                    if (freezeTimer <= 0) {
+                        const perk = document.getElementById('perk-freeze');
+                        if (perk) {
+                            perk.classList.replace('text-cyan-300', 'text-cyan-500/40');
+                            perk.classList.remove('glow-cyan');
+                        }
+                    }
+                }
+
+                if (now - lastSpawnTime > spawnInterval && waveEnemiesToSpawn.length > 0) {
+                    spawnEnemyFromQueue();
+                    lastSpawnTime = now;
+                }
+
+                if (waveEnemiesToSpawn.length === 0 && enemies.length === 0) {
+                    wave++;
+                    generateWave(wave);
+                }
+
+                for (let i = enemies.length - 1; i >= 0; i--) {
+                    const enemy = enemies[i];
+                    enemy.update(dt);
+                    enemy.draw(ctx);
+
+                    if (enemy.timer <= 0) {
+                        enemyAttack(enemy);
+                    }
+                }
+
+                for (let i = lasers.length - 1; i >= 0; i--) {
+                    const laser = lasers[i];
+                    laser.update(dt);
+                    laser.draw(ctx);
+                    if (laser.progress >= 1) {
+                        lasers.splice(i, 1);
+                    }
+                }
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.update();
+                    p.draw(ctx);
+                    if (p.life <= 0) {
+                        particles.splice(i, 1);
+                    }
+                }
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function drawTurretBase(ctx) {
+            const centerX = canvas.width / 2;
+            const bottomY = canvas.height;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(centerX, bottomY + 20, 70, Math.PI, 0);
+            ctx.fillStyle = '#0f172a';
+            ctx.fill();
+            ctx.strokeStyle = '#22d3ee';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(centerX, bottomY - 10, 20, 0, Math.PI * 2);
+            ctx.fillStyle = playerShield > 0 ? '#22d3ee' : '#ef4444';
+            ctx.shadowColor = ctx.fillStyle;
+            ctx.shadowBlur = 15;
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function togglePause() {
+            if (gameState === 'PLAYING') {
+                gameState = 'PAUSED';
+                document.getElementById('pause-screen').classList.remove('hidden');
+            } else if (gameState === 'PAUSED') {
+                gameState = 'PLAYING';
+                document.getElementById('pause-screen').classList.add('hidden');
+                document.getElementById('hidden-input').focus();
+            }
+        }
+
+        function returnToMainMenu() {
+            gameState = 'MENU';
+            enemies = [];
+            particles = [];
+            lasers = [];
+            activeBoss = null;
+            resetInputState();
+
+            document.getElementById('menu-highscore').innerText = localStorage.getItem('typer_highscore') || 0;
+            document.getElementById('menu-highwpm').innerText = localStorage.getItem('typer_highwpm') || 0;
+
+            document.getElementById('hud-top').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.add('hidden');
+            document.getElementById('pause-screen').classList.add('hidden');
+            document.getElementById('boss-hud').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+
+        function startGame() {
+            gameState = 'PLAYING';
+            score = 0;
+            wave = 1;
+            totalTypedChars = 0;
+            correctTypedChars = 0;
+            combo = 1;
+            playerShield = 100;
+            playerHull = 100;
+            resetInputState();
+            enemies = [];
+            particles = [];
+            lasers = [];
+            activeBoss = null;
+            startTime = Date.now();
+
+            audio.init();
+
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.add('hidden');
+            document.getElementById('pause-screen').classList.add('hidden');
+            document.getElementById('hud-top').classList.remove('hidden');
+            document.getElementById('diff-tag').innerText = selectedDifficulty;
+
+            generateWave(wave);
+            updateHUDStats();
+
+            const hiddenInput = document.getElementById('hidden-input');
+            if (hiddenInput) hiddenInput.focus();
+        }
+
+        function endGame(victory = false) {
+            gameState = 'GAMEOVER';
+
+            const elapsedMinutes = Math.max(0.05, (Date.now() - startTime) / 60000);
+            const finalWpm = Math.round((correctTypedChars / 5) / elapsedMinutes);
+            const finalAcc = totalTypedChars > 0 ? Math.round((correctTypedChars / totalTypedChars) * 100) : 100;
+
+            const bestScore = localStorage.getItem('typer_highscore') || 0;
+            const bestWpm = localStorage.getItem('typer_highwpm') || 0;
+
+            if (score > Number(bestScore)) localStorage.setItem('typer_highscore', score);
+            if (finalWpm > Number(bestWpm)) localStorage.setItem('typer_highwpm', finalWpm);
+
+            const titleElem = document.getElementById('gameover-title');
+            if (victory) {
+                titleElem.innerText = "MISSION ACCOMPLISHED";
+                titleElem.className = "font-orbitron text-4xl font-black text-emerald-400 tracking-wider mb-2 glow-cyan";
+            } else {
+                titleElem.innerText = "BASE DESTROYED";
+                titleElem.className = "font-orbitron text-4xl font-black text-red-500 tracking-wider mb-2 glow-red";
+            }
+
+            document.getElementById('gameover-sub').innerText = victory ? "All hostile sector threats neutralized!" : "Command Turret bunker breach detected.";
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('final-wpm').innerText = `${finalWpm} WPM`;
+            document.getElementById('final-acc').innerText = `${finalAcc}%`;
+            document.getElementById('final-waves').innerText = wave - 1;
+
+            document.getElementById('hud-top').classList.add('hidden');
+            document.getElementById('pause-screen').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.remove('hidden');
+        }
+
+        // Keydown capture
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (gameState === 'PLAYING' || gameState === 'PAUSED') {
+                    togglePause();
+                    return;
+                }
+            }
+
+            if (gameState !== 'PLAYING') return;
+
+            if (e.key === 'Backspace') {
+                if (currentInput.length > 0) {
+                    currentInput = currentInput.slice(0, -1);
+                    if (currentInput.length === 0) {
+                        currentTargetId = null;
+                    }
+                }
+                updateInputUI();
+                return;
+            }
+
+            if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+                handleKeyInput(e.key.toUpperCase());
+            }
+        });
+
+        window.addEventListener('click', (e) => {
+            if (gameState === 'PLAYING' && !e.target.closest('button')) {
+                const hiddenInput = document.getElementById('hidden-input');
+                if (hiddenInput) hiddenInput.focus();
+            }
+        });
+
+        // Event Listeners setup after DOM loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.diff-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.diff-btn').forEach(b => {
+                        b.classList.remove('bg-cyan-900/50', 'text-cyan-300', 'border-cyan-500/80', 'active-diff');
+                        b.classList.add('bg-slate-800', 'text-slate-300');
+                    });
+                    e.currentTarget.classList.add('bg-cyan-900/50', 'text-cyan-300', 'border-cyan-500/80', 'active-diff');
+                    selectedDifficulty = e.currentTarget.getAttribute('data-diff');
+                });
+            });
+
+            document.getElementById('start-btn').addEventListener('click', startGame);
+            document.getElementById('restart-btn').addEventListener('click', startGame);
+            document.getElementById('gameover-menu-btn').addEventListener('click', returnToMainMenu);
+            document.getElementById('pause-menu-btn').addEventListener('click', returnToMainMenu);
+            document.getElementById('pause-btn').addEventListener('click', togglePause);
+            document.getElementById('resume-btn').addEventListener('click', togglePause);
+
+            document.getElementById('audio-toggle').addEventListener('click', () => {
+                audio.enabled = !audio.enabled;
+                document.getElementById('audio-status').innerText = audio.enabled ? 'ON' : 'OFF';
+                document.getElementById('audio-status').className = audio.enabled ? 'text-emerald-400' : 'text-red-400';
+            });
+
+            document.getElementById('menu-highscore').innerText = localStorage.getItem('typer_highscore') || 0;
+            document.getElementById('menu-highwpm').innerText = localStorage.getItem('typer_highwpm') || 0;
+        });
+
+        // Kickoff Render Loop on window load
+        window.onload = function() {
+            resizeCanvas();
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>
