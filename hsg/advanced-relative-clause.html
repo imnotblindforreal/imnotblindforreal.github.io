@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mệnh đề quan hệ nâng cao - Blind Corner</title>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1c1e21;
+      --accent: #2563eb;
+      --border-radius: 16px;
+      --code-bg: #f8fafc;
+      --warning-bg: #fef2f2;
+      --warning-border: #ef4444;
+      --success-bg: #f0fdf4;
+      --success-border: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    header {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #65676b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f2f5;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem 0;
+      color: #334155;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 0.75rem;
+    }
+
+    ul, ol {
+      margin-left: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .example-box {
+      background-color: var(--code-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .example-box p {
+      margin-bottom: 0.3rem;
+      color: #1e293b;
+    }
+
+    .example-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .note-box {
+      background-color: var(--warning-bg);
+      border-left: 4px solid var(--warning-border);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-weight: 600;
+      color: #991b1b;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    /* Exercise Styles */
+    .exercise-item {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .exercise-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .toggle-btn {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .answer-box {
+      display: none;
+      background-color: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #14532d;
+    }
+
+    .answer-box.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back-btn">&larr; Quay lại Danh mục Ôn HSG</a>
+    <h1>Mệnh đề quan hệ nâng cao (Advanced Relative Clauses)</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- I. QUAN TIFIERS WITH RELATIVE CLAUSES -->
+    <section class="section-card">
+      <h2>I. Mệnh đề quan hệ chỉ số lượng (Quantifiers with Relative Clauses)</h2>
+      <p>Khi muốn diễn tả một lượng cụ thể (một vài, tất cả, hầu hết, không ai...) trong số nhóm người/vật được nhắc đến, ta dùng cấu trúc:</p>
+      
+      <div class="example-box">
+        <strong>Công thức:</strong> Quantifier + of + whom/which/whose
+      </div>
+
+      <p>Các từ chỉ số lượng thường gặp: <em>all, both, each, either, neither, many, much, most, several, some, a few, none, half, two/three...</em></p>
+
+      <div class="example-box">
+        <p><strong>Ví dụ 1:</strong></p>
+        <p>- Gốc: She has three brothers. All of them are doctors.</p>
+        <p>&rarr; She has three brothers, <span class="highlight">all of whom</span> are doctors.</p>
+        <p><strong>Ví dụ 2:</strong></p>
+        <p>- Gốc: I bought ten books. Most of them are about science.</p>
+        <p>&rarr; I bought ten books, <span class="highlight">most of which</span> are about science.</p>
+      </div>
+
+      <div class="note-box">
+        [!] Lưu ý: Bắt buộc phải có dấu phẩy trước từ chỉ số lượng và không dùng them/it/us khi đã dùng mệnh đề quan hệ.
+      </div>
+    </section>
+
+    <!-- II. THAY THẾ CHO CẢ MỆNH ĐỀ -->
+    <section class="section-card">
+      <h2>II. Mệnh đề quan hệ thay thế cho cả mệnh đề đứng trước</h2>
+      <p>Đại từ quan hệ <strong>which</strong> có thể đại diện cho toàn bộ ý/hành động của mệnh đề đằng trước nó.</p>
+
+      <div class="example-box">
+        <p><strong>Công thức:</strong> S + V..., <span class="highlight">which + V (chia số ít)</span>...</p>
+        <p><strong>Ý nghĩa:</strong> "...điều mà / việc này..."</p>
+      </div>
+
+      <div class="example-box">
+        <p>- Gốc: He passed the entrance exam with a high score. This surprised everyone.</p>
+        <p>&rarr; He passed the entrance exam with a high score, <span class="highlight">which surprised</span> everyone.</p>
+        <p><em>&rarr; Phân tích: <strong>Which</strong> ở đây không thay thế cho score hay exam, mà thay cho cả việc anh ấy đỗ kỳ thi với điểm số cao.</em></p>
+      </div>
+    </section>
+
+    <!-- III. LƯỢC BỎ ĐẠI TỪ QUAN HỆ -->
+    <section class="section-card">
+      <h2>III. Lược bỏ Đại từ quan hệ (Omission of Relative Pronouns)</h2>
+      <p>Ta có thể giản lược đại từ quan hệ mà không cần đổi dạng động từ trong các điều kiện sau:</p>
+
+      <h3>1. Rule 1: Khi đại từ quan hệ làm Tân ngữ (Object)</h3>
+      <p>Chỉ áp dụng với Mệnh đề xác định (không có dấu phẩy) và không đứng sau giới từ.</p>
+      <div class="example-box">
+        <p>The movie <span class="highlight">which</span> I watched last night was awesome.</p>
+        <p>&rarr; The movie I watched last night was awesome.</p>
+      </div>
+
+      <h3>2. Rule 2: KHÔNG ĐƯỢC lược bỏ khi:</h3>
+      <ul>
+        <li>Đại từ quan hệ làm <strong>Chủ ngữ (Subject)</strong>.</li>
+        <li>Nằm trong <strong>Mệnh đề không xác định</strong> (có dấu phẩy).</li>
+        <li>Đứng ngay sau <strong>giới từ</strong> (vd: <em>The man to whom I spoke...</em>).</li>
+      </ul>
+    </section>
+
+    <!-- IV. RÚT GỌN MỆNH ĐỀ QUAN HỆ -->
+    <section class="section-card">
+      <h2>IV. Rút gọn Mệnh đề quan hệ</h2>
+
+      <h3>Rule 1: Dùng V-ing (Mệnh đề ở thể chủ động)</h3>
+      <p>Bỏ đại từ quan hệ và trợ động từ, đưa động từ chính về dạng V-ing.</p>
+      <div class="example-box">
+        <p>- Gốc: The boy who stands near the door is my brother.</p>
+        <p>&rarr; <strong>Rút gọn:</strong> The boy <span class="highlight">standing</span> near the door is my brother.</p>
+      </div>
+
+      <h3>Rule 2: Dùng V3/ed (Mệnh đề ở thể bị động)</h3>
+      <p>Bỏ đại từ quan hệ và động từ to be, giữ lại V3/ed.</p>
+      <div class="example-box">
+        <p>- Gốc: The car which was stolen yesterday has been found.</p>
+        <p>&rarr; <strong>Rút gọn:</strong> The car <span class="highlight">stolen</span> yesterday has been found.</p>
+      </div>
+
+      <h3>Rule 3: Dùng To-V</h3>
+      <p>Dùng khi danh từ đứng trước có các từ bổ nghĩa: <em>the first, the second, the last, the only</em>, hoặc cấp so sánh nhất.</p>
+      <div class="example-box">
+        <p>- Gốc: He was the last person who left the room.</p>
+        <p>&rarr; <strong>Rút gọn:</strong> He was the last person <span class="highlight">to leave</span> the room.</p>
+      </div>
+
+      <h3>Rule 4: Rút gọn thành Cụm Danh từ / Cụm Đồng tính từ (Appositive Phrase)</h3>
+      <p>Áp dụng khi mệnh đề có dạng: <em>who/which + be + Noun Phrase / Adjective Phrase</em></p>
+      <div class="example-box">
+        <p>- Gốc: George Washington, who was the first president of the US, was born in 1732.</p>
+        <p>&rarr; George Washington, <span class="highlight">the first president of the US</span>, was born in 1732. <em>(Cụm danh từ)</em></p>
+        <p>- Gốc: The sports car, which was fast and expensive, belonged to John.</p>
+        <p>&rarr; The sports car, <span class="highlight">fast and expensive</span>, belonged to John. <em>(Cụm tính từ)</em></p>
+      </div>
+
+      <h3>Rule 5: Rút gọn với With hoặc Without</h3>
+      <p>Dùng khi mệnh đề có động từ sở hữu <em>have</em> hoặc câu miêu tả đặc điểm.</p>
+      <div class="example-box">
+        <p>- Gốc: A man who has a long beard came to the shop.</p>
+        <p>&rarr; A man <span class="highlight">with</span> a long beard came to the shop.</p>
+        <p>- Gốc: Students who don't have ID cards cannot enter the library.</p>
+        <p>&rarr; Students <span class="highlight">without</span> ID cards cannot enter the library.</p>
+      </div>
+
+      <h3>Rule 6: Rút gọn ở thể Bị động của To-V (To be + V3/ed)</h3>
+      <p>Áp dụng sau <em>the first, the last, the only...</em> khi mệnh đề ở thể bị động.</p>
+      <div class="example-box">
+        <p>- Gốc: He was the first man who was saved from the sinking ship.</p>
+        <p>&rarr; He was the first man <span class="highlight">to be saved</span> from the sinking ship.</p>
+      </div>
+    </section>
+
+    <!-- V. CLEFT SENTENCES -->
+    <section class="section-card">
+      <h2>V. Mệnh đề quan hệ ẩn dạng Nhấn mạnh (Cleft Sentences with Relative Clauses)</h2>
+      <p>Cấu trúc câu chẻ dùng MĐQH để nhấn mạnh một thành phần trong câu (Chủ ngữ, Tân ngữ, Trạng ngữ):</p>
+      
+      <div class="example-box">
+        <strong>Công thức:</strong> It + is/was + Thành phần nhấn mạnh + that/who + V
+      </div>
+
+      <h3>1. Nhấn mạnh Chủ ngữ:</h3>
+      <div class="example-box">
+        <p>- Gốc: Tom broke the window.</p>
+        <p>&rarr; It was Tom <span class="highlight">who/that</span> broke the window.</p>
+      </div>
+
+      <h3>2. Nhấn mạnh Tân ngữ:</h3>
+      <div class="example-box">
+        <p>- Gốc: I bought this laptop yesterday.</p>
+        <p>&rarr; It was this laptop <span class="highlight">that</span> I bought yesterday.</p>
+      </div>
+
+      <h3>3. Nhấn mạnh Trạng ngữ:</h3>
+      <div class="example-box">
+        <p>- Gốc: We met in Hanoi.</p>
+        <p>&rarr; It was in Hanoi <span class="highlight">that</span> we met.</p>
+      </div>
+    </section>
+
+    <!-- VI. BÀI TẬP LUYỆN TẬP (EXERCISE) -->
+    <section class="section-card">
+      <h2>VI. Bài tập luyện tập (Exercise)</h2>
+
+      <h3>Bài 1: Viết lại câu rút gọn mệnh đề quan hệ</h3>
+      <ol>
+        <li class="exercise-item">
+          The girl who is sitting next to my sister is a famous singer.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans1')">Hiện đáp án</button>
+          <div id="ans1" class="answer-box">
+            <strong>Đáp án:</strong> The girl <strong>sitting</strong> next to my sister is a famous singer. (Rút gọn V-ing)
+          </div>
+        </li>
+        <li class="exercise-item">
+          Neil Armstrong was the first man who walked on the Moon.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans2')">Hiện đáp án</button>
+          <div id="ans2" class="answer-box">
+            <strong>Đáp án:</strong> Neil Armstrong was the first man <strong>to walk</strong> on the Moon. (Rút gọn To-V sau "the first")
+          </div>
+        </li>
+        <li class="exercise-item">
+          The documents which were sent this morning are extremely important.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans3')">Hiện đáp án</button>
+          <div id="ans3" class="answer-box">
+            <strong>Đáp án:</strong> The documents <strong>sent</strong> this morning are extremely important. (Rút gọn V3/ed bị động)
+          </div>
+        </li>
+        <li class="exercise-item">
+          The house, which was built 100 years ago, is still in good condition.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans4')">Hiện đáp án</button>
+          <div id="ans4" class="answer-box">
+            <strong>Đáp án:</strong> The house, <strong>built 100 years ago</strong>, is still in good condition.
+          </div>
+        </li>
+      </ol>
+
+      <h3>Bài 2: Kết hợp câu dùng từ chỉ số lượng / thay thế mệnh đề</h3>
+      <ol>
+        <li class="exercise-item">
+          He gave me three options. None of them was suitable for my project.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans5')">Hiện đáp án</button>
+          <div id="ans5" class="answer-box">
+            <strong>Đáp án:</strong> He gave me three options, <strong>none of which</strong> was suitable for my project.
+          </div>
+        </li>
+        <li class="exercise-item">
+          My sister passed the driving test on her first attempt. This made my parents very proud.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans6')">Hiện đáp án</button>
+          <div id="ans6" class="answer-box">
+            <strong>Đáp án:</strong> My sister passed the driving test on her first attempt, <strong>which made</strong> my parents very proud.
+          </div>
+        </li>
+      </ol>
+
+      <h3>Bài 3: Viết lại câu chẻ (Cleft Sentences)</h3>
+      <ol>
+        <li class="exercise-item">
+          My brother found the lost keys under the sofa yesterday. (Nhấn mạnh "under the sofa")
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans7')">Hiện đáp án</button>
+          <div id="ans7" class="answer-box">
+            <strong>Đáp án:</strong> It was <strong>under the sofa that</strong> my brother found the lost keys yesterday.
+          </div>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script src="../favicon.js"></script>
+  <script>
+    function toggleAnswer(id) {
+      const box = document.getElementById(id);
+      box.classList.toggle('show');
+      const btn = box.previousElementSibling;
+      if (box.classList.contains('show')) {
+        btn.textContent = 'Ẩn đáp án';
+      } else {
+        btn.textContent = 'Hiện đáp án';
+      }
+    }
+  </script>
+</body>
+</html>
