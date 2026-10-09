@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mệnh đề quan hệ</title>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1c1e21;
+      --accent: #2563eb;
+      --border-radius: 16px;
+      --code-bg: #f8fafc;
+      --warning-bg: #fef2f2;
+      --warning-border: #ef4444;
+      --success-bg: #f0fdf4;
+      --success-border: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    header {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #65676b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f2f5;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem 0;
+      color: #334155;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 0.75rem;
+    }
+
+    ul, ol {
+      margin-left: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .example-box {
+      background-color: var(--code-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .example-box p {
+      margin-bottom: 0.3rem;
+      color: #1e293b;
+    }
+
+    .example-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .note-box {
+      background-color: var(--warning-bg);
+      border-left: 4px solid var(--warning-border);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-weight: 600;
+      color: #991b1b;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    /* Exercise Styles */
+    .exercise-item {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .exercise-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .toggle-btn {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .answer-box {
+      display: none;
+      background-color: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #14532d;
+    }
+
+    .answer-box.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back-btn">&larr; Quay lại Danh mục Ôn HSG</a>
+    <h1>Mệnh đề quan hệ (Relative Clauses)</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- I. ĐỊNH NGHĨA -->
+    <section class="section-card">
+      <h2>I. Mệnh đề quan hệ là gì?</h2>
+      <p>Mệnh đề quan hệ đứng ngay sau một danh từ/đại từ để bổ nghĩa cho danh từ/đại từ đó, đóng vai trò như một tính từ.</p>
+      
+      <div class="example-box">
+        <p><strong>Ví dụ:</strong></p>
+        <p>- 2 câu đơn: I met a girl. She speaks 5 languages.</p>
+        <p>&rarr; <strong>Câu ghép:</strong> I met a girl <span class="highlight">who speaks 5 languages</span>.</p>
+      </div>
+    </section>
+
+    <!-- II. ĐẠI TỪ QUAN HỆ -->
+    <section class="section-card">
+      <h2>II. Đại từ quan hệ (Relative Pronouns)</h2>
+      <p>Dùng để thay thế cho danh từ chỉ người, vật hoặc sở hữu.</p>
+
+      <h3>1. Who</h3>
+      <ul>
+        <li><strong>Thay thế cho:</strong> Người</li>
+        <li><strong>Vai trò trong MĐQH:</strong> Chủ ngữ (S) / Tân ngữ</li>
+      </ul>
+      <div class="example-box">
+        <p>The man <span class="highlight">who</span> lives next door is a doctor.</p>
+        <p><em>(= The man is a doctor. He lives next door.)</em></p>
+      </div>
+
+      <h3>2. Whom</h3>
+      <ul>
+        <li><strong>Thay thế cho:</strong> Người</li>
+        <li><strong>Vai trò trong MĐQH:</strong> Tân ngữ</li>
+      </ul>
+      <div class="example-box">
+        <p>The girl <span class="highlight">whom</span> you met yesterday is my sister.</p>
+        <p><em>(= The girl is my sister. You met her yesterday.)</em></p>
+      </div>
+
+      <h3>3. Which</h3>
+      <ul>
+        <li><strong>Thay thế cho:</strong> Vật, sự việc</li>
+        <li><strong>Vai trò trong MĐQH:</strong> Chủ ngữ (S) / Tân ngữ</li>
+      </ul>
+      <div class="example-box">
+        <p>The book <span class="highlight">which</span> is on the table is mine.</p>
+        <p><em>(= The book is mine. It is on the table.)</em></p>
+      </div>
+
+      <h3>4. That</h3>
+      <ul>
+        <li><strong>Thay thế cho:</strong> Người, vật</li>
+        <li><strong>Vai trò trong MĐQH:</strong> Chủ ngữ (S) / Tân ngữ</li>
+      </ul>
+      <div class="example-box">
+        <p>I love the song <span class="highlight">that</span> you recommended.</p>
+        <p><em>(= I love the song. You recommended it.)</em></p>
+      </div>
+
+      <h3>5. Whose</h3>
+      <ul>
+        <li><strong>Thay thế cho:</strong> Sở hữu (người/vật)</li>
+        <li><strong>Vai trò trong MĐQH:</strong> Đi cùng danh từ</li>
+      </ul>
+      <div class="example-box">
+        <p>I met a boy <span class="highlight">whose</span> father is a famous painter.</p>
+        <p><em>(= I met a boy. His father is a famous painter.)</em></p>
+      </div>
+    </section>
+
+    <!-- III. TRẠNG TỪ QUAN HỆ -->
+    <section class="section-card">
+      <h2>III. Trạng từ quan hệ (Relative Adverbs)</h2>
+      <p>Dùng để thay thế cho cụm giới từ + danh từ chỉ thời gian, nơi chốn, lý do.</p>
+
+      <h3>1. Where</h3>
+      <ul>
+        <li><strong>Thay thế cho:</strong> Nơi chốn</li>
+        <li><strong>Paraphrase:</strong> in/on/at + which</li>
+      </ul>
+      <div class="example-box">
+        <p>The school <span class="highlight">where</span> I studied is huge.</p>
+        <p>= The school <strong>at which</strong> I studied is huge.</p>
+        <p><em>(= The school is huge. I studied there)</em></p>
+      </div>
+
+      <h3>2. When</h3>
+      <ul>
+        <li><strong>Thay thế cho:</strong> Thời gian</li>
+        <li><strong>Paraphrase:</strong> in/on/at + which</li>
+      </ul>
+      <div class="example-box">
+        <p>I remember the day <span class="highlight">when</span> we first met.</p>
+        <p>= I remember the day <strong>on which</strong> we first met.</p>
+        <p><em>(= I remember the day. We first met on that day.)</em></p>
+      </div>
+
+      <h3>3. Why</h3>
+      <ul>
+        <li><strong>Thay thế cho:</strong> Lý do</li>
+        <li><strong>Paraphrase:</strong> for + which</li>
+      </ul>
+      <div class="example-box">
+        <p>Tell me the reason <span class="highlight">why</span> you left.</p>
+        <p>= Tell me the reason <strong>for which</strong> you left.</p>
+        <p><em>(= Tell me the reason. You left for that reason.)</em></p>
+      </div>
+    </section>
+
+    <!-- IV. HAI LOẠI MỆNH ĐỀ QUAN HỆ -->
+    <section class="section-card">
+      <h2>IV. Hai loại Mệnh đề quan hệ</h2>
+
+      <h3>1. Mệnh đề xác định (Defining Relative Clause)</h3>
+      <ul>
+        <li><strong>Tác dụng:</strong> Cung cấp thông tin bắt buộc để xác định danh từ là ai/cái gì. Không có nó câu sẽ không đủ nghĩa.</li>
+        <li><strong>Quy tắc:</strong> Không dùng dấu phẩy. Được phép dùng <em>that</em>.</li>
+      </ul>
+      <div class="example-box">
+        <p>The car <strong>that I bought last week</strong> broke down.</p>
+        <p><em>&rarr; Nếu xóa: "The car broke down." (không đủ thông tin rõ ràng)</em></p>
+      </div>
+
+      <h3>2. Mệnh đề không xác định (Non-defining Relative Clause)</h3>
+      <ul>
+        <li><strong>Tác dụng:</strong> Cung cấp thông tin bổ sung. Bỏ mệnh đề này đi câu vẫn đủ nghĩa.</li>
+        <li><strong>Dấu hiệu:</strong> Đứng sau danh từ riêng, tên riêng, hoặc danh từ có tính từ sở hữu (my, his,...), đại từ chỉ định (this, that, these, those).</li>
+        <li><strong>Quy tắc:</strong> Bắt buộc dùng dấu phẩy. <strong>TUYỆT ĐỐI KHÔNG dùng that.</strong></li>
+      </ul>
+      <div class="example-box">
+        <p>My brother, <strong>who lives in Hanoi</strong>, is an engineer.</p>
+        <p><em>&rarr; Nếu xóa: "My brother is an engineer." (vẫn đầy đủ nghĩa)</em></p>
+      </div>
+    </section>
+
+    <!-- V. CÁC TRƯỜNG HỢP ĐẶC BIỆT -->
+    <section class="section-card">
+      <h2>V. Các trường hợp đặc biệt</h2>
+
+      <h3>1. Khi nào bắt buộc dùng That?</h3>
+      <ul>
+        <li>
+          <strong>Sau danh từ hỗn hợp (gồm cả người + vật):</strong>
+          <div class="example-box">
+            Look at the man and his dog <span class="highlight">that</span> are walking in the park.
+          </div>
+        </li>
+        <li>
+          <strong>Sau các đại từ bất định (everything, something, anything, nothing, all, much, little):</strong>
+          <div class="example-box">
+            Is there anything <span class="highlight">that</span> I can help you with?
+          </div>
+        </li>
+        <li>
+          <strong>Sau cấp so sánh nhất:</strong>
+          <div class="example-box">
+            This is the best film <span class="highlight">that</span> I have ever watched.
+          </div>
+        </li>
+      </ul>
+
+      <h3>2. Giới từ trong mệnh đề quan hệ</h3>
+      <ul>
+        <li>
+          <strong>Văn phong trang trọng (Formal):</strong> Giới từ đặt trước <em>whom / which</em>.
+          <div class="example-box">
+            The man <span class="highlight">to whom</span> you were speaking is my uncle.
+          </div>
+        </li>
+        <li>
+          <strong>Văn phong thân mật (Informal):</strong> Giới từ đặt sau động từ.
+          <div class="example-box">
+            The man <span class="highlight">who/whom</span> you were speaking <span class="highlight">to</span> is my uncle.
+          </div>
+        </li>
+      </ul>
+
+      <div class="note-box">
+        [!] Lưu ý: Không đặt giới từ trước <u>that</u> và <u>who</u>.
+      </div>
+    </section>
+
+    <!-- VI. BÀI TẬP LUYỆN TẬP (EXERCISE) -->
+    <section class="section-card">
+      <h2>VI. Bài tập luyện tập (Exercise)</h2>
+
+      <h3>Bài 1: Điền đại từ/trạng từ quan hệ thích hợp vào chỗ trống</h3>
+      <ol>
+        <li class="exercise-item">
+          The woman _______ lives next door is a famous musician.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans1')">Hiện đáp án</button>
+          <div id="ans1" class="answer-box"><strong>Đáp án:</strong> who / that</div>
+        </li>
+        <li class="exercise-item">
+          This is the house _______ I was born.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans2')">Hiện đáp án</button>
+          <div id="ans2" class="answer-box"><strong>Đáp án:</strong> where (hoặc <em>in which</em>)</div>
+        </li>
+        <li class="exercise-item">
+          The student _______ passport was lost was taken to the embassy.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans3')">Hiện đáp án</button>
+          <div id="ans3" class="answer-box"><strong>Đáp án:</strong> whose</div>
+        </li>
+        <li class="exercise-item">
+          That is the most delicious cake _______ I have ever eaten.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans4')">Hiện đáp án</button>
+          <div id="ans4" class="answer-box"><strong>Đáp án:</strong> that (Bắt buộc dùng <em>that</em> do đứng sau so sánh nhất)</div>
+        </li>
+        <li class="exercise-item">
+          Mr. David, _______ you met yesterday, is our new director.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans5')">Hiện đáp án</button>
+          <div id="ans5" class="answer-box"><strong>Đáp án:</strong> whom / who (Không dùng <em>that</em> vì đây là MĐQH không xác định)</div>
+        </li>
+      </ol>
+
+      <h3>Bài 2: Nối hai câu đơn thành một câu dùng Mệnh đề quan hệ</h3>
+      <ol>
+        <li class="exercise-item">
+          I saw a girl and her cat. They were running in the garden.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans6')">Hiện đáp án</button>
+          <div id="ans6" class="answer-box">
+            <strong>Đáp án:</strong> I saw a girl and her cat <strong>that</strong> were running in the garden.<br>
+            <em>(Bắt buộc dùng "that" do hỗn hợp người + vật)</em>
+          </div>
+        </li>
+        <li class="exercise-item">
+          The hotel was very comfortable. We stayed at this hotel during our vacation.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans7')">Hiện đáp án</button>
+          <div id="ans7" class="answer-box">
+            <strong>Đáp án 1 (Formal):</strong> The hotel <strong>at which we stayed</strong> during our vacation was very comfortable.<br>
+            <strong>Đáp án 2 (Informal):</strong> The hotel <strong>where we stayed</strong> during our vacation was very comfortable.
+          </div>
+        </li>
+        <li class="exercise-item">
+          London is the capital of England. It is located on the River Thames.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans8')">Hiện đáp án</button>
+          <div id="ans8" class="answer-box">
+            <strong>Đáp án:</strong> London, <strong>which is located on the River Thames</strong>, is the capital of England.<br>
+            <em>(MĐQH không xác định có dấu phẩy, không dùng "that")</em>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script src="../favicon.js"></script>
+  <script>
+    function toggleAnswer(id) {
+      const box = document.getElementById(id);
+      box.classList.toggle('show');
+      const btn = box.previousElementSibling;
+      if (box.classList.contains('show')) {
+        btn.textContent = 'Ẩn đáp án';
+      } else {
+        btn.textContent = 'Hiện đáp án';
+      }
+    }
+  </script>
+</body>
+</html>
