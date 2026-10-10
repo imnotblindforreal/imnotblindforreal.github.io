@@ -64,6 +64,8 @@
       padding: 0.3rem;
       border-radius: 99px;
       margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .tab-btn {
@@ -149,6 +151,7 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('simple', this)">Simple</button>
     <button class="tab-btn" onclick="switchTab('advanced', this)">Advanced</button>
+    <button class="tab-btn" onclick="switchTab('vocabulary', this)">Vocabulary</button>
   </div>
 
   <!-- Tab Simple -->
@@ -210,6 +213,17 @@
       <div>
         <h2>Câu tường thuật nâng cao</h2>
         <p>Tường thuật với động từ chỉ định, câu điều kiện và dạng đặc biệt.</p>
+      </div>
+      <span class="card-tag">Học ngay &rarr;</span>
+    </a>
+  </div>
+
+  <!-- Tab Vocabulary -->
+  <div id="vocabulary" class="tab-content">
+    <a href="voc1.html" class="card">
+      <div>
+        <h2>Topic 1: Technology</h2>
+        <p>Từ vựng và thuật ngữ chuyên sâu chủ đề Công nghệ cho kỳ thi HSG.</p>
       </div>
       <span class="card-tag">Học ngay &rarr;</span>
     </a>
