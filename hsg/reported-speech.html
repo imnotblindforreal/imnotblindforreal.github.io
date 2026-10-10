@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Câu tường thuật</title>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1c1e21;
+      --accent: #2563eb;
+      --border-radius: 16px;
+      --code-bg: #f8fafc;
+      --warning-bg: #fef2f2;
+      --warning-border: #ef4444;
+      --success-bg: #f0fdf4;
+      --success-border: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    header {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #65676b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f2f5;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem 0;
+      color: #334155;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 0.75rem;
+    }
+
+    ul, ol {
+      margin-left: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .example-box {
+      background-color: var(--code-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .example-box p {
+      margin-bottom: 0.3rem;
+      color: #1e293b;
+    }
+
+    .example-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .note-box {
+      background-color: var(--warning-bg);
+      border-left: 4px solid var(--warning-border);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-weight: 600;
+      color: #991b1b;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    /* Table Styles */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    /* Exercise Styles */
+    .exercise-item {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .exercise-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .toggle-btn {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .answer-box {
+      display: none;
+      background-color: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #14532d;
+    }
+
+    .answer-box.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back-btn">&larr; Quay lại Danh mục Ôn HSG</a>
+    <h1>Câu tường thuật (Reported Speech)</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- I. CÂU TƯỜNG THUẬT VỚI CÂU PHÁT BIỂU -->
+    <section class="section-card">
+      <h2>I. Câu tường thuật với câu phát biểu / khai báo (Statements)</h2>
+      <p>Dùng để thuật lại một lời phát biểu, ý kiến, hoặc thông tin do ai đó nói ra mà không trích dẫn nguyên văn.</p>
+
+      <h3>1. Quy trình 3 bước chuyển đổi:</h3>
+      <ol>
+        <li><strong>Bước 1:</strong> Chọn động từ tường thuật phù hợp (<em>said, told, announced, explained...</em>).</li>
+        <li><strong>Bước 2:</strong> Đổi đại từ nhân xưng, đại từ sở hữu, tính từ sở hữu và đại từ phản xạ cho phù hợp với ngữ cảnh.</li>
+        <li><strong>Bước 3:</strong> Lùi thì của động từ (nếu động từ tường thuật ở quá khứ) và biến đổi các từ chỉ thời gian, nơi chốn, đại từ chỉ định.</li>
+      </ol>
+
+      <div class="example-box">
+        <p><strong>Công thức:</strong></p>
+        <p><span class="highlight">S + said + (that) + S + V (lùi thì)</span></p>
+        <p><span class="highlight">S + told + O + (that) + S + V (lùi thì)</span></p>
+      </div>
+
+      <div class="example-box">
+        <p>- Trực tiếp: "I am playing video games in my room now," Nam said to me.</p>
+        <p>&rarr; Gián tiếp: <strong>Nam told me that he was playing video games in his room then.</strong></p>
+      </div>
+
+      <h3>2. Bảng quy tắc biến đổi chi tiết:</h3>
+
+      <h4>A. Quy tắc Lùi thì (Tense Backshift):</h4>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Thì trực tiếp</th>
+              <th>Chuyển sang Thì gián tiếp</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hiện tại đơn (V1 / s / es)</td>
+              <td><span class="highlight">Quá khứ đơn (V2 / ed)</span></td>
+            </tr>
+            <tr>
+              <td>Hiện tại tiếp diễn (am / is / are + V-ing)</td>
+              <td><span class="highlight">Quá khứ tiếp diễn (was / were + V-ing)</span></td>
+            </tr>
+            <tr>
+              <td>Hiện tại hoàn thành (have / has + V3/ed)</td>
+              <td><span class="highlight">Quá khứ hoàn thành (had + V3/ed)</span></td>
+            </tr>
+            <tr>
+              <td>Hiện tại hoàn thành tiếp diễn (have / has been + V-ing)</td>
+              <td><span class="highlight">Quá khứ hoàn thành tiếp diễn (had been + V-ing)</span></td>
+            </tr>
+            <tr>
+              <td>Quá khứ đơn (V2 / ed)</td>
+              <td><span class="highlight">Quá khứ hoàn thành (had + V3/ed)</span></td>
+            </tr>
+            <tr>
+              <td>Quá khứ tiếp diễn (was / were + V-ing)</td>
+              <td><span class="highlight">Quá khứ hoàn thành tiếp diễn (had been + V-ing) / Giữ nguyên</span></td>
+            </tr>
+            <tr>
+              <td>Quá khứ hoàn thành (had + V3/ed)</td>
+              <td><span class="highlight">Giữ nguyên Quá khứ hoàn thành (had + V3/ed)</span></td>
+            </tr>
+            <tr>
+              <td>Tương lai đơn (will + Vbare)</td>
+              <td><span class="highlight">Would + Vbare</span></td>
+            </tr>
+            <tr>
+              <td>Tương lai tiếp diễn (will be + V-ing)</td>
+              <td><span class="highlight">Would be + V-ing</span></td>
+            </tr>
+            <tr>
+              <td>Tương lai hoàn thành (will have + V3/ed)</td>
+              <td><span class="highlight">Would have + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td>Tương lai gần (am / is / are going to + V)</td>
+              <td><span class="highlight">Was / were going to + V</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>B. Quy tắc đổi Động từ khuyết thiếu (Modal Verbs):</h4>
+      <ul>
+        <li>Can &rarr; <strong>Could</strong></li>
+        <li>May &rarr; <strong>Might</strong></li>
+        <li>Must &rarr; <strong>Had to</strong> (sự bắt buộc) hoặc giữ nguyên <strong>Must</strong></li>
+        <li>Will &rarr; <strong>Would</strong></li>
+        <li>Shall &rarr; <strong>Should</strong> (xin ý kiến) hoặc <strong>Would</strong> (tương lai)</li>
+      </ul>
+
+      <h4>C. Quy tắc đổi Từ chỉ Thời gian, Nơi chốn & Đại từ chỉ định:</h4>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Từ trực tiếp</th>
+              <th>Từ gián tiếp</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Here</td><td>There</td></tr>
+            <tr><td>This / These</td><td>That / Those</td></tr>
+            <tr><td>Now</td><td>Then / At that moment</td></tr>
+            <tr><td>Today / Tonight</td><td>That day / That night</td></tr>
+            <tr><td>Yesterday</td><td>The day before / The previous day</td></tr>
+            <tr><td>Tomorrow</td><td>The next day / The following day / The day after</td></tr>
+            <tr><td>Ago</td><td>Before / Earlier</td></tr>
+            <tr><td>Last week / month / year</td><td>The week / month / year before OR The previous week / month / year</td></tr>
+            <tr><td>Next week / month / year</td><td>The following week / month / year OR The week / month / year after</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note-box">
+        [!] Động từ "said" không đi trực tiếp với Tân ngữ chỉ người. Nếu muốn có tân ngữ phải dùng "said to someone" hoặc đổi thành "told someone". (Ví dụ: "He said to me" &rarr; "He told me").
+      </div>
+
+      <div class="note-box">
+        [!] Quy tắc chuyển đổi Đại từ:<br>
+        - Ngôi thứ 1 (I, we, me, us, my, our) &rarr; Đổi theo CHỦ NGỮ của động từ tường thuật.<br>
+        - Ngôi thứ 2 (you, your, yours) &rarr; Đổi theo TÂN NGỮ của động từ tường thuật.<br>
+        - Ngôi thứ 3 (he, she, it, they, his, her, their) &rarr; GIỮ NGUYÊN.
+      </div>
+    </section>
+
+    <!-- II. CÂU MỆNH LỆNH / YÊU CẦU / LỜI KHUYÊN -->
+    <section class="section-card">
+      <h2>II. Câu tường thuật với Câu mệnh lệnh / Yêu cầu / Lời khuyên (Commands, Requests, Advice)</h2>
+      <p>Dùng để thuật lại một câu mệnh lệnh, lời yêu cầu, lời mời, lời khuyên, lời cảnh báo hay sự nhắc nhở. Dạng câu này KHÔNG lùi thì động từ chính mà đưa động từ về dạng nguyên mẫu có "to" (To-V) hoặc phủ định (Not to-V).</p>
+
+      <div class="example-box">
+        <p><strong>Công thức:</strong></p>
+        <p>- Khẳng định: <span class="highlight">S + V (tường thuật) + O + to-V</span></p>
+        <p>- Phủ định: <span class="highlight">S + V (tường thuật) + O + not to-V</span></p>
+      </div>
+
+      <h3>Các Động từ Tường thuật phân loại theo nhóm:</h3>
+      <ul>
+        <li>
+          <strong>Yêu cầu / Mệnh lệnh (tell / ask / order / command / require + O + (not) to-V):</strong>
+          <div class="example-box">"Clean your room immediately!" my mother said. &rarr; <strong>My mother ordered me to clean my room immediately.</strong></div>
+        </li>
+        <li>
+          <strong>Lời khuyên (advise / recommend + O + (not) to-V):</strong>
+          <div class="example-box">"You should rest for a few days," the doctor said to him. &rarr; <strong>The doctor advised him to rest for a few days.</strong></div>
+        </li>
+        <li>
+          <strong>Nhắc nhở / Cảnh báo (remind / warn + O + (not) to-V):</strong>
+          <div class="example-box">"Don't touch the hot stove!" she said to the boy. &rarr; <strong>She warned the boy not to touch the hot stove.</strong></div>
+        </li>
+        <li>
+          <strong>Lời mời / Khuyến khích (invite / encourage / urge + O + (not) to-V):</strong>
+          <div class="example-box">"Would you like to join our study group?" Lan said to Hoa. &rarr; <strong>Lan invited Hoa to join their study group.</strong></div>
+        </li>
+      </ul>
+
+      <div class="note-box">
+        [!] Khi thuật lại câu mệnh lệnh/yêu cầu, phải BỎ tất cả các từ xưng hô lịch sự hoặc từ mở đầu như: "Please", "Would you mind...", "Could you please...", "Can you...", "If I were you...".
+      </div>
+
+      <div class="note-box">
+        [!] Phân biệt giữa "warn someone not to do something" (cảnh báo ai đừng làm gì) và "warn someone against doing something" (cảnh báo chống lại việc làm gì - cấu trúc V-ing).
+      </div>
+    </section>
+
+    <!-- III. CÂU HỎI YES/NO -->
+    <section class="section-card">
+      <h2>III. Câu tường thuật với Câu hỏi Yes/No (Yes/No Questions)</h2>
+      <p>Dùng để thuật lại những câu hỏi mà câu trả lời là "Yes" (Có) hoặc "No" (Không). Để nối mệnh đề tường thuật với câu hỏi, bắt buộc phải sử dụng liên từ <strong>If</strong> hoặc <strong>Whether</strong> (nghĩa là "liệu rằng...").</p>
+
+      <div class="example-box">
+        <strong>Công thức:</strong> <span class="highlight">S + asked / wanted to know / wondered + (O) + if / whether + S + V (lùi thì)</span>
+      </div>
+
+      <div class="example-box">
+        <p>- Trực tiếp: "Did you pass the English Olympiad exam yesterday?" Phong asked me.</p>
+        <p>&rarr; Gián tiếp: <strong>Phong asked me if I had passed the English Olympiad exam the day before.</strong></p>
+      </div>
+
+      <div class="note-box">
+        [!] Thứ tự từ trong câu tường thuật câu hỏi Yes/No là dạng TRẦN THUẬT (S + V), tuyệt đối không đảo trợ động từ hay động từ To Be lên trước chủ ngữ. Cuối câu dùng dấu chấm (.), không dùng dấu hỏi (?).
+      </div>
+
+      <div class="note-box">
+        [!] Dùng "whether... or not" khi câu hỏi trực tiếp có chứa cụm "or not", hoặc khi muốn nhấn mạnh sự lựa chọn giữa hai khả năng. (Ví dụ: "He asked me whether I wanted to stay or leave").
+      </div>
+    </section>
+
+    <!-- IV. CÂU HỎI WH- -->
+    <section class="section-card">
+      <h2>IV. Câu tường thuật với Câu hỏi Wh- (Wh- Questions)</h2>
+      <p>Dùng để thuật lại các câu hỏi bắt đầu bằng từ để hỏi (Wh-words) như: <em>What, Where, When, Why, Who, Whom, Whose, Which, How (How much, How many, How long, How far...)...</em></p>
+
+      <div class="example-box">
+        <strong>Công thức:</strong> <span class="highlight">S + asked / wanted to know / wondered + (O) + Wh-word + S + V (lùi thì)</span>
+      </div>
+
+      <div class="example-box">
+        <p>- Trực tiếp: "Why are you studying classical Vietnamese poetry late at night?" my brother asked me.</p>
+        <p>&rarr; Gián tiếp: <strong>My brother asked me why I was studying classical Vietnamese poetry late at night.</strong></p>
+        <p>- Trực tiếp: "How long have you lived in Nam Dinh?" she asked him.</p>
+        <p>&rarr; Gián tiếp: <strong>She asked him how long he had lived in Nam Dinh.</strong></p>
+      </div>
+
+      <div class="note-box">
+        [!] Nếu từ để hỏi đóng vai trò là CHỦ NGỮ trong câu trực tiếp (thường là Who/What + V), khi chuyển sang tường thuật ta giữ nguyên thứ tự và chỉ lùi thì động từ.<br>
+        - Ex: "Who broke the window?" the teacher asked. &rarr; <em>The teacher asked who had broken the window.</em>
+      </div>
+
+      <div class="note-box">
+        [!] Chú ý vị trí của Giới từ đi cùng từ hỏi: Có thể giữ giới từ ở cuối câu hoặc chuyển giới từ lên trước từ hỏi trong văn phong trang trọng. (Ex: "Who are you talking to?" &rarr; <em>He asked me who I was talking to / to whom I was talking</em>).
+      </div>
+    </section>
+
+    <!-- V. CẤU TRÚC NÂNG CAO VỚI V-ING & TO-V -->
+    <section class="section-card">
+      <h2>V. Các cấu trúc tường thuật nâng cao với Danh động từ (V-ing) và Động từ nguyên mẫu (To-V)</h2>
+
+      <h3>1. Cấu trúc Tường thuật với Danh động từ (V-ing):</h3>
+      <ul>
+        <li>
+          <strong>S + V (tường thuật) + V-ing:</strong> <em>suggest, admit, deny, stop...</em>
+          <div class="example-box">
+            - "Let's build a new 3D graphics canvas generator," he said. &rarr; <strong>He suggested building a new 3D graphics canvas generator.</strong><br>
+            - "I didn't break the rules," the student said. &rarr; <strong>The student denied breaking the rules.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>S + V (tường thuật) + Giới từ + V-ing:</strong>
+          <ul>
+            <li><em>apologize to someone for V-ing</em> (xin lỗi ai vì...)</li>
+            <li><em>accuse someone of V-ing</em> (buộc tội ai về việc...)</li>
+            <li><em>congratulate someone on V-ing</em> (chúc mừng ai vì...)</li>
+            <li><em>warn someone against V-ing</em> (cảnh báo ai không nên...)</li>
+            <li><em>thank someone for V-ing</em> (cảm ơn ai vì...)</li>
+            <li><em>insist on V-ing</em> (khăng khăng đòi...)</li>
+            <li><em>criticize someone for V-ing</em> (phê bình ai vì...)</li>
+          </ul>
+          <div class="example-box">
+            - "I'm sorry I submitted the report late," she said to the teacher. &rarr; <strong>She apologized to the teacher for submitting the report late.</strong><br>
+            - "You stole my ideas!" he said to his classmate. &rarr; <strong>He accused his classmate of stealing his ideas.</strong>
+          </div>
+        </li>
+      </ul>
+
+      <h3>2. Cấu trúc Tường thuật với Động từ nguyên mẫu (To-V):</h3>
+      <p><strong>S + V (tường thuật) + To-V:</strong> <em>promise, threaten, offer, refuse, agree, claim...</em></p>
+      <div class="example-box">
+        - "I will help you solve this quadratic equation," he said. &rarr; <strong>He promised to help me solve that quadratic equation.</strong><br>
+        - "No, I won't share my private code," the developer said. &rarr; <strong>The developer refused to share his private code.</strong>
+      </div>
+
+      <div class="note-box">
+        [!] Khi tường thuật lại câu gợi ý với "suggest", có 2 cấu trúc phổ biến:<br>
+        1. S + suggest + V-ing<br>
+        2. S + suggest + that + S + (should) + V-bare (không chia động từ).
+      </div>
+    </section>
+
+    <!-- VI. CÁC TRƯỜNG HỢP KHÔNG LÙI THÌ -->
+    <section class="section-card">
+      <h2>VI. Các trường hợp đặc biệt không lùi thì (No Backshift)</h2>
+      <p>Mặc dù động từ tường thuật ở thì quá khứ (said, told, asked...), mệnh đề tường thuật phía sau **BẮT BUỘC GIỮ NGUYÊN THÌ** trong các trường hợp sau:</p>
+
+      <ol>
+        <li>
+          <strong>Động từ tường thuật ở thì Hiện tại hoặc Tương lai:</strong> (says, tell, has said, will say).
+          <div class="example-box">"I am writing a Luau script," he says. &rarr; <strong>He says that he is writing a Luau script.</strong></div>
+        </li>
+        <li>
+          <strong>Diễn tả một Chân lý, Sự thật hiển nhiên, Quy luật tự nhiên:</strong>
+          <div class="example-box">"Water freezes at 0 degrees Celsius," the science teacher said. &rarr; <strong>The science teacher said that water freezes at 0 degrees Celsius.</strong></div>
+        </li>
+        <li>
+          <strong>Sự việc mang tính thực tế vẫn còn đúng ở hiện tại:</strong>
+          <div class="example-box">"My home town is Nam Dinh," Trường said to his friends. &rarr; <strong>Trường told his friends that his home town is Nam Dinh.</strong></div>
+        </li>
+        <li>
+          <strong>Sự việc diễn ra ngay tức thì sau khi nói:</strong>
+          <div class="example-box">A: "I don't understand this grammar rule." &rarr; B (nói lại với C): <strong>"A said he doesn't understand this grammar rule."</strong></div>
+        </li>
+        <li>
+          <strong>Đi với các Động từ khuyết thiếu không đổi:</strong> <em>would, could, should, might, ought to, used to, had better, would rather...</em>
+          <div class="example-box">"You had better review your English grammar," the mentor said. &rarr; <strong>The mentor said that I had better review my English grammar.</strong></div>
+        </li>
+        <li>
+          <strong>Mệnh đề điều kiện Loại 2 và Loại 3:</strong>
+          <div class="example-box">"If I had more free time, I would learn the piano," he said. &rarr; <strong>He said that if he had more free time, he would learn the piano.</strong></div>
+        </li>
+        <li>
+          <strong>Mệnh đề giả định / Cấu trúc Lùi thì sẵn:</strong> (Wish, It's high time, It's time, Would rather).
+          <div class="example-box">"I wish I were good at advanced mathematics," she said. &rarr; <strong>She said that she wished she were good at advanced mathematics.</strong></div>
+        </li>
+      </ol>
+
+      <div class="note-box">
+        [!] Xử lý động từ Khuyết thiếu "MUST":<br>
+        - Must diễn tả sự bắt buộc mang tính thực tế trong quá khứ &rarr; Lùi thành HAD TO.<br>
+        - Must diễn tả suy đoán củng cố, quy định mang tính pháp lý/chân lý, hoặc lời khuyên chân thành &rarr; GIỮ NGUYÊN MUST.
+      </div>
+    </section>
+
+    <!-- VII. BÀI TẬP LUYỆN TẬP (EXERCISE) -->
+    <section class="section-card">
+      <h2>VII. Bài tập luyện tập (Exercise)</h2>
+
+      <h3>Chuyển các câu sau sang câu tường thuật gián tiếp:</h3>
+      <ol>
+        <li class="exercise-item">
+          "I will finish this project tomorrow," Nam said to me.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans1')">Hiện đáp án</button>
+          <div id="ans1" class="answer-box">
+            <strong>Đáp án:</strong> Nam told me that he would finish that project the next day / the following day.
+          </div>
+        </li>
+        <li class="exercise-item">
+          "Where did you buy this camera?" she asked her brother.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans2')">Hiện đáp án</button>
+          <div id="ans2" class="answer-box">
+            <strong>Đáp án:</strong> She asked her brother where he had bought that camera.
+          </div>
+        </li>
+        <li class="exercise-item">
+          "Don't make noise in the library!" the librarian said to us.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans3')">Hiện đáp án</button>
+          <div id="ans3" class="answer-box">
+            <strong>Đáp án:</strong> The librarian told / ordered us not to make noise in the library.
+          </div>
+        </li>
+        <li class="exercise-item">
+          "I'm sorry I broke your window," the boy said to the woman.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans4')">Hiện đáp án</button>
+          <div id="ans4" class="answer-box">
+            <strong>Đáp án:</strong> The boy apologized to the woman for breaking her window.
+          </div>
+        </li>
+        <li class="exercise-item">
+          "The Earth revolves around the Sun," the teacher said.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans5')">Hiện đáp án</button>
+          <div id="ans5" class="answer-box">
+            <strong>Đáp án:</strong> The teacher said that the Earth revolves around the Sun. (Không lùi thì do là chân lý)
+          </div>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script src="../favicon.js"></script>
+  <script>
+    function toggleAnswer(id) {
+      const box = document.getElementById(id);
+      box.classList.toggle('show');
+      const btn = box.previousElementSibling;
+      if (box.classList.contains('show')) {
+        btn.textContent = 'Ẩn đáp án';
+      } else {
+        btn.textContent = 'Hiện đáp án';
+      }
+    }
+  </script>
+</body>
+</html>
