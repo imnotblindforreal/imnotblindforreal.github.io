@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đảo ngữ nâng cao</title>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1c1e21;
+      --accent: #2563eb;
+      --border-radius: 16px;
+      --code-bg: #f8fafc;
+      --warning-bg: #fef2f2;
+      --warning-border: #ef4444;
+      --success-bg: #f0fdf4;
+      --success-border: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    header {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #65676b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f2f5;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem 0;
+      color: #334155;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 0.75rem;
+    }
+
+    ul, ol {
+      margin-left: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .example-box {
+      background-color: var(--code-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .example-box p {
+      margin-bottom: 0.3rem;
+      color: #1e293b;
+    }
+
+    .example-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .note-box {
+      background-color: var(--warning-bg);
+      border-left: 4px solid var(--warning-border);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-weight: 600;
+      color: #991b1b;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    /* Exercise Styles */
+    .exercise-item {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .exercise-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .toggle-btn {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .answer-box {
+      display: none;
+      background-color: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #14532d;
+    }
+
+    .answer-box.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back-btn">&larr; Quay lại Danh mục Ôn HSG</a>
+    <h1>Đảo ngữ (Inversion)</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- I. ĐẢO NGỮ VỚI ONLY -->
+    <section class="section-card">
+      <h2>I. Đảo ngữ với "Only"</h2>
+      <p>Khi "Only" đi kèm với một trạng từ, cụm trạng từ, hoặc mệnh đề trạng ngữ đặt ở đầu câu, ta sẽ đảo ngữ ở mệnh đề chính.</p>
+
+      <h3>1. Only after + N / V-ing / Mệnh đề</h3>
+      <div class="example-box">
+        <span class="highlight">Only after + N / V-ing / (S + V) + Trợ động từ / Be + S + V</span><br>
+        - <em>Only after looking at the answer key did I realize my mistake.</em><br>
+        - <em>Only after he had finished his homework was he allowed to go out.</em>
+      </div>
+
+      <h3>2. Only when + Mệnh đề</h3>
+      <div class="example-box">
+        <span class="highlight">Only when + S1 + V1 + Trợ động từ / Be + S2 + V2</span><br>
+        - <em>Only when you grow up will you understand your parents.</em>
+      </div>
+
+      <h3>3. Only if + Mệnh đề</h3>
+      <div class="example-box">
+        <span class="highlight">Only if + S1 + V1 + Trợ động từ / Be + S2 + V2</span><br>
+        - <em>Only if you study hard can you pass the entrance exam.</em>
+      </div>
+
+      <h3>4. Only by + V-ing / N</h3>
+      <div class="example-box">
+        <span class="highlight">Only by + V-ing / N + Trợ động từ / Be + S + V</span><br>
+        - <em>Only by practicing every day can you speak English fluently.</em>
+      </div>
+
+      <h3>5. Only with + N / V-ing</h3>
+      <div class="example-box">
+        <span class="highlight">Only with + N + Trợ động từ / Be + S + V</span><br>
+        - <em>Only with luck was he able to survive the accident.</em>
+      </div>
+
+      <h3>6. Only then / Only in this way / Only in that way</h3>
+      <div class="example-box">
+        <span class="highlight">Only then / Only in this way + Trợ động từ / Be + S + V</span><br>
+        - <em>Only then did I know the truth.</em><br>
+        - <em>Only in this way can we solve the problem.</em>
+      </div>
+
+      <div class="note-box">
+        [!] Nếu sau "Only" là một mệnh đề (S + V), KHÔNG đảo ngữ ở mệnh đề đi ngay sau Only, mà đảo ngữ ở mệnh đề chính phía sau.
+      </div>
+      <div class="note-box">
+        [!] Khi "Only" bổ nghĩa trực tiếp cho Chủ ngữ của câu (vd: "Only you can do this"), KHÔNG thực hiện đảo ngữ.
+      </div>
+    </section>
+
+    <!-- II. ĐẢO NGỮ NGAY KHI... THÌ... -->
+    <section class="section-card">
+      <h2>II. Đảo ngữ cấu trúc "Ngay khi... thì..." (Vừa mới... thì...)</h2>
+      
+      <p><strong>Quy tắc về thì:</strong></p>
+      <ul>
+        <li>Hành động 1 (xảy ra trước): Chia quá khứ hoàn thành (had + V3/ed) &rarr; ĐẢO NGỮ lên đầu.</li>
+        <li>Hành động 2 (xảy ra sau): Chia quá khứ đơn (V2/ed) &rarr; Đứng sau từ nối, KHÔNG đảo ngữ.</li>
+      </ul>
+
+      <h3>1. Cấu trúc với "No sooner ... than ..."</h3>
+      <div class="example-box">
+        <span class="highlight">No sooner + had + S1 + V1(V3/ed) + THAN + S2 + V2(quá khứ đơn)</span><br>
+        - <em>No sooner had I arrived home than the phone rang.</em>
+      </div>
+
+      <h3>2. Cấu trúc với "Hardly / Scarcely / Barely ... when / before ..."</h3>
+      <div class="example-box">
+        <span class="highlight">Hardly / Scarcely / Barely + had + S1 + V1(V3/ed) + WHEN / BEFORE + S2 + V2(quá khứ đơn)</span><br>
+        - <em>Hardly had the singer appeared on stage when the fans screamed.</em><br>
+        - <em>Scarcely had we stepped outside when it began to rain heavily.</em>
+      </div>
+
+      <div class="note-box">
+        [!] "No sooner" bắt buộc đi với liên từ THAN.<br>
+        [!] "Hardly / Scarcely / Barely" bắt buộc đi với liên từ WHEN hoặc BEFORE. Không dùng lẫn lộn giữa hai nhóm này.
+      </div>
+    </section>
+
+    <!-- III. NOT UNTIL / NOT SINCE / NOT ONLY -->
+    <section class="section-card">
+      <h2>III. Đảo ngữ với "Not until / Not since / Not only"</h2>
+
+      <h3>1. Not until (Mãi cho đến khi... thì mới...)</h3>
+      <ul>
+        <li>
+          <strong>Dạng 1 (Đi với mốc thời gian / Danh từ):</strong>
+          <div class="example-box">
+            <span class="highlight">Not until + mốc thời gian / N + Trợ động từ / Be + S + V</span><br>
+            - <em>Not until 11 PM did he come home.</em>
+          </div>
+        </li>
+        <li>
+          <strong>Dạng 2 (Đi với Mệnh đề S + V):</strong>
+          <div class="example-box">
+            <span class="highlight">Not until + S1 + V1 + Trợ động từ / Be + S2 + V2</span><br>
+            - <em>Not until I got home did I realize I had lost my wallet.</em>
+          </div>
+        </li>
+      </ul>
+      <div class="note-box">
+        [!] Với cấu trúc "Not until + S1 + V1", đảo ngữ CHỈ xảy ra ở mệnh đề chính (S2), mệnh đề đứng ngay sau Not until (S1) giữ nguyên thứ tự chủ động bình thường.
+      </div>
+
+      <h3>2. Not since (Kể từ khi... thì chưa từng...)</h3>
+      <div class="example-box">
+        <span class="highlight">Not since + mốc thời gian / Mệnh đề QKĐ + have / has + S + V3/ed</span><br>
+        - <em>Not since 1990 has the city experienced such a severe drought.</em><br>
+        - <em>Not since I was a child have I seen such a huge circus show.</em>
+      </div>
+      <div class="note-box">
+        [!] Mệnh đề đi ngay sau "Not since" chia ở thì Quá khứ đơn, còn mệnh đề đảo ngữ phía sau bắt buộc chia ở thì Hiện tại hoàn thành.
+      </div>
+
+      <h3>3. Not only ... but also ... (Không những... mà còn...)</h3>
+      <div class="example-box">
+        <span class="highlight">Not only + Trợ động từ / Be + S1 + V1 + BUT + S2 + also + V2</span><br>
+        - <em>Not only is she beautiful, but she is also very smart.</em><br>
+        - <em>Not only does he sing well, but he also plays the guitar proficiently.</em>
+      </div>
+      <div class="note-box">
+        [!] Đảo ngữ chỉ xảy ra ở vế "Not only", vế "but also" giữ nguyên thứ tự câu bình thường.
+      </div>
+    </section>
+
+    <!-- IV. CỤM GIỚI TỪ PHỦ ĐỊNH -->
+    <section class="section-card">
+      <h2>IV. Đảo ngữ với Cụm giới từ phủ định</h2>
+      <p>Khi các cụm giới từ phủ định chứa "No" đứng ở đầu câu, mệnh đề chính lập tức đảo trợ động từ / động từ to be / modal verb lên trước chủ ngữ.</p>
+
+      <div class="example-box">
+        <strong>Công thức chung:</strong> <span class="highlight">Cụm giới từ phủ định + Trợ động từ / Modal Verb / Be + S + V</span>
+      </div>
+
+      <ul>
+        <li><strong>Under no circumstances:</strong> Dù trong bất kỳ hoàn cảnh nào cũng không &rarr; <em>Under no circumstances should you open this door.</em></li>
+        <li><strong>At no time:</strong> Không bao giờ / Chưa từng có lúc nào &rarr; <em>At no time did he suspect that he was cheated.</em></li>
+        <li><strong>In no way:</strong> Không đời nào / Không cách nào &rarr; <em>In no way can this problem be solved without money.</em></li>
+        <li><strong>On no account:</strong> Không vì bất kỳ lý do gì &rarr; <em>On no account must employees leave work early.</em></li>
+        <li><strong>By no means:</strong> Hoàn toàn không &rarr; <em>By no means is this task easy to accomplish.</em></li>
+        <li><strong>Under no condition / In no condition:</strong> Dù bất kỳ điều kiện nào cũng không &rarr; <em>Under no condition will I agree to these terms.</em></li>
+      </ul>
+
+      <div class="note-box">
+        [!] Các cụm từ này bản thân đã mang nghĩa phủ định (KHÔNG), do đó động từ trong mệnh đề đảo ngữ phải ở dạng KHẲNG ĐỊNH, không thêm "not" nữa.
+      </div>
+    </section>
+
+    <!-- V. ĐẢO NGỮ ĐỊA ĐIỂM / PHƯƠNG HƯỚNG -->
+    <section class="section-card">
+      <h2>V. Đảo ngữ chỉ địa điểm / phương hướng (Inversion of Place / Direction)</h2>
+      <p>Dạng này dùng để miêu tả vị trí, không gian, phương hướng hoặc tạo tính giật gân, sinh động cho câu văn.</p>
+
+      <div class="note-box">
+        [!] Đây là dạng ĐẢO NGỮ TOÀN BỘ (Full Inversion). Ta đảo TOÀN BỘ ĐỘNG TỪ CHÍNH lên trước Chủ ngữ, tuyệt đối KHÔNG dùng trợ động từ (do/does/did).
+      </div>
+
+      <h3>1. Cụm giới từ chỉ địa điểm / vị trí</h3>
+      <div class="example-box">
+        <span class="highlight">Cụm giới từ chỉ nơi chốn + Động từ (chia theo thì) + Chủ ngữ</span><br>
+        - On the top of the hill <strong>stands</strong> an ancient castle.<br>
+        - Under the shade of the big tree <strong>sat</strong> an old man.<br>
+        - In the middle of the classroom <strong>was</strong> a large table.
+      </div>
+
+      <h3>2. Trạng từ chỉ phương hướng / chuyển động</h3>
+      <div class="example-box">
+        <span class="highlight">Trạng từ chỉ phương hướng + Động từ + Chủ ngữ</span><br>
+        - Down <strong>poured</strong> the rain.<br>
+        - Away <strong>flew</strong> the birds.<br>
+        - Up <strong>went</strong> the hot air balloon.
+      </div>
+
+      <h3>3. Đảo ngữ với "Here" và "There"</h3>
+      <div class="example-box">
+        <span class="highlight">Here / There + Động từ (be, come, go...) + Chủ ngữ</span><br>
+        - Here <strong>comes</strong> the bus!<br>
+        - There <strong>goes</strong> our last chance.
+      </div>
+
+      <div class="note-box">
+        [!] NGOẠI LỆ CỰC KỲ QUAN TRỌNG KHI CHỦ NGỮ LÀ ĐẠI TỪ NHÂN XƯỚNG (I, you, he, she, it, we, they):<br>
+        Nếu Chủ ngữ là một Đại từ, ta KHÔNG ĐẢO NGỮ động từ lên trước, mà giữ nguyên thứ tự (Chủ ngữ + Động từ).<br>
+        - Với Danh từ: Away flew <strong>the bird</strong>. (ĐẢO NGỮ)<br>
+        - Với Đại từ: Away <strong>it</strong> flew. (KHÔNG ĐẢO NGỮ)<br>
+        - Với Danh từ: Here comes <strong>the teacher</strong>. (ĐẢO NGỮ)<br>
+        - Với Đại từ: Here <strong>she</strong> comes. (KHÔNG ĐẢO NGỮ)
+      </div>
+
+      <div class="note-box">
+        [!] Tuyệt đối KHÔNG mượn trợ động từ "do / does / did".<br>
+        - Sai: On the hill does stand a castle.<br>
+        - Đúng: On the hill stands a castle.
+      </div>
+
+      <div class="note-box">
+        [!] Động từ phải chia hòa hợp với Chủ ngữ đứng ở PHÍA SAU NÓ.<br>
+        - Ex: Under the tree <strong>was</strong> <em>a boy</em>. (Chia "was" theo "a boy")<br>
+        - Ex: Under the tree <strong>were</strong> <em>three boys</em>. (Chia "were" theo "three boys")
+      </div>
+    </section>
+
+    <!-- VI. ĐẢO NGỮ VỚI PHÂN TỪ -->
+    <section class="section-card">
+      <h2>VI. Đảo ngữ với Phân từ (Inversion with Participles)</h2>
+      <p>Đảo ngữ với phân từ là dạng **ĐẢO NGỮ TOÀN BỘ (Full Inversion)**, trong đó Hiện tại phân từ (V-ing) hoặc Quá khứ phân từ (V3/ed) cùng với cụm đi kèm được đưa lên đầu câu.</p>
+
+      <h3>1. Quá khứ phân từ (Past Participles - V3/ed)</h3>
+      <div class="example-box">
+        <span class="highlight">V3/ed + (Cụm đi kèm) + Be + Chủ ngữ</span><br>
+        - <strong>Located on the top of the hill is</strong> an ancient castle.<br>
+        - <strong>Attached to the email were</strong> many beautiful pictures.
+      </div>
+
+      <h3>2. Hiện tại phân từ (Present Participles - V-ing)</h3>
+      <div class="example-box">
+        <span class="highlight">V-ing + (Cụm đi kèm) + Be + Chủ ngữ</span><br>
+        - <strong>Sitting in the corner of the room is</strong> a group of students.<br>
+        - <strong>Hanging over the town was</strong> a dark cloud.
+      </div>
+
+      <div class="note-box">
+        [!] Động từ Be phải chia hòa hợp với Chủ ngữ đứng ở PHÍA SAU NÓ.<br>
+        - Ex: Included in the package <strong>is</strong> <em>a small gift</em>.<br>
+        - Ex: Included in the package <strong>are</strong> <em>two small gifts</em>.
+      </div>
+
+      <div class="note-box">
+        [!] Cấu trúc này cũng áp dụng tương tự với các Tính từ (Adjectives) chỉ trạng thái khi đưa lên đầu câu:<br>
+        <strong>Adj + Be + Subject</strong><br>
+        - Ex: <strong>So terrible was the storm</strong> that many houses were destroyed.<br>
+        - Ex: <strong>Great was his surprise</strong> when he won the competition.
+      </div>
+    </section>
+
+    <!-- VII. ĐẢO NGỮ NHƯỢNG BỘ VỚI AS / THOUGH -->
+    <section class="section-card">
+      <h2>VII. Đảo ngữ nhượng bộ với "As / Though"</h2>
+      <p>Cấu trúc này dùng để diễn tả sự nhượng bộ (nghĩa là "Mặc dù... nhưng..."), tương đương với Although / Even though / Despite.</p>
+
+      <h3>1. Đảo ngữ với Tính từ (Adjective)</h3>
+      <div class="example-box">
+        <span class="highlight">Adj + as / though + S + be, Mệnh đề chính</span><br>
+        - <strong>Tired as he was</strong>, he finished the report.<br>
+        - <strong>Difficult as the test was</strong>, all students passed it.
+      </div>
+
+      <h3>2. Đảo ngữ với Trạng từ (Adverb)</h3>
+      <div class="example-box">
+        <span class="highlight">Adv + as / though + S + V, Mệnh đề chính</span><br>
+        - <strong>Fast as she ran</strong>, she missed the train.<br>
+        - <strong>Carefully as he explained</strong>, no one understood.
+      </div>
+
+      <h3>3. Đảo ngữ với Danh từ (Noun)</h3>
+      <div class="example-box">
+        <span class="highlight">Noun (KHÔNG CÓ a/an) + as / though + S + be, Mệnh đề chính</span><br>
+        - <strong>Child as he was</strong>, he showed great intelligence.<br>
+        - <strong>Beginner as she is</strong>, she plays very well.
+      </div>
+
+      <h3>4. Đảo ngữ với Động từ (Verb / V-ing / V3)</h3>
+      <div class="example-box">
+        <span class="highlight">V (bare) + as / though + S + may / might / do / does / did, Mệnh đề chính</span><br>
+        - <strong>Try as I might</strong>, I couldn't open the door.<br>
+        - <strong>Cry as she did</strong>, nobody noticed.
+      </div>
+
+      <div class="note-box">
+        [!] Tuyệt đối KHÔNG dùng "Although" trong cấu trúc đảo ngữ này (Không có dạng Adj + although + S + V).
+      </div>
+      <div class="note-box">
+        [!] Khi đảo ngữ Danh từ đơn số đếm được lên đầu câu, BẮT BUỘC BỎ mạo từ "a / an".<br>
+        - Sai: A child as he was...<br>
+        - Đúng: Child as he was...
+      </div>
+    </section>
+
+    <!-- VIII. BÀI TẬP LUYỆN TẬP (EXERCISE) -->
+    <section class="section-card">
+      <h2>VIII. Bài tập luyện tập (Exercise)</h2>
+
+      <h3>Viết lại các câu sau dùng cấu trúc đảo ngữ:</h3>
+      <ol>
+        <li class="exercise-item">
+          I realized my mistake only after looking at the answer key.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans1')">Hiện đáp án</button>
+          <div id="ans1" class="answer-box">
+            <strong>Đáp án:</strong> Only after looking at the answer key did I realize my mistake.
+          </div>
+        </li>
+        <li class="exercise-item">
+          The singer had no sooner appeared on stage than the fans screamed.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans2')">Hiện đáp án</button>
+          <div id="ans2" class="answer-box">
+            <strong>Đáp án:</strong> No sooner had the singer appeared on stage than the fans screamed.
+          </div>
+        </li>
+        <li class="exercise-item">
+          I didn't realize I had lost my wallet until I got home.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans3')">Hiện đáp án</button>
+          <div id="ans3" class="answer-box">
+            <strong>Đáp án:</strong> Not until I got home did I realize I had lost my wallet.
+          </div>
+        </li>
+        <li class="exercise-item">
+          An old man sat under the shade of the big tree.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans4')">Hiện đáp án</button>
+          <div id="ans4" class="answer-box">
+            <strong>Đáp án:</strong> Under the shade of the big tree sat an old man. (Đảo ngữ toàn bộ)
+          </div>
+        </li>
+        <li class="exercise-item">
+          Although he was a child, he showed great intelligence.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans5')">Hiện đáp án</button>
+          <div id="ans5" class="answer-box">
+            <strong>Đáp án:</strong> Child as / though he was, he showed great intelligence. (Lưu ý bỏ mạo từ "a")
+          </div>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script src="../favicon.js"></script>
+  <script>
+    function toggleAnswer(id) {
+      const box = document.getElementById(id);
+      box.classList.toggle('show');
+      const btn = box.previousElementSibling;
+      if (box.classList.contains('show')) {
+        btn.textContent = 'Ẩn đáp án';
+      } else {
+        btn.textContent = 'Hiện đáp án';
+      }
+    }
+  </script>
+</body>
+</html>
