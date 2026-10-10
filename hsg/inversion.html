@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đảo ngữ</title>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1c1e21;
+      --accent: #2563eb;
+      --border-radius: 16px;
+      --code-bg: #f8fafc;
+      --warning-bg: #fef2f2;
+      --warning-border: #ef4444;
+      --success-bg: #f0fdf4;
+      --success-border: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    header {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #65676b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f2f5;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem 0;
+      color: #334155;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 0.75rem;
+    }
+
+    ul, ol {
+      margin-left: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .example-box {
+      background-color: var(--code-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .example-box p {
+      margin-bottom: 0.3rem;
+      color: #1e293b;
+    }
+
+    .example-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    /* Exercise Styles */
+    .exercise-item {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .exercise-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .toggle-btn {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .answer-box {
+      display: none;
+      background-color: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #14532d;
+    }
+
+    .answer-box.show {
+      display: block;
+    }
+
+    .note-box {
+      background-color: var(--warning-bg);
+      border-left: 4px solid var(--warning-border);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-weight: 600;
+      color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back-btn">&larr; Quay lại Danh mục Ôn HSG</a>
+    <h1>Đảo ngữ (Inversion)</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- I. ĐẢO NGỮ TRONG CÂU HỎI -->
+    <section class="section-card">
+      <h2>I. Đảo ngữ trong câu hỏi</h2>
+      <p>Đây là dạng đảo ngữ cơ bản nhất trong tiếng Anh. Để tạo câu hỏi, ta đảo trợ động từ (auxiliary verb) hoặc động từ To Be / Modal Verb lên trước chủ ngữ.</p>
+      
+      <div class="example-box">
+        <strong>Công thức tổng quát:</strong> (Từ hỏi) + Trợ động từ / Be / Modal Verb + S + V
+      </div>
+
+      <div class="example-box">
+        <p>- Khẳng định: You are working today.<br>&rarr; <strong>Are you working today?</strong></p>
+        <p>- Khẳng định: She lives in London.<br>&rarr; <strong>Where does she live?</strong></p>
+        <p>- Khẳng định: They have finished their work.<br>&rarr; <strong>Have they finished their work?</strong></p>
+      </div>
+    </section>
+
+    <!-- II. ĐẢO NGỮ VỚI SO / NEITHER / NOR -->
+    <section class="section-card">
+      <h2>II. Đảo ngữ với So / Neither / Nor</h2>
+      <p>Dùng trong câu giao tiếp để thể hiện sự tán thành hoặc đồng ý kiến với câu đã nói trước đó (nghĩa là "ai đó cũng vậy" hoặc "ai đó cũng không").</p>
+
+      <h3>1. Đồng tình khẳng định với So ("Ai đó cũng vậy")</h3>
+      <div class="example-box">
+        <span class="highlight">So + Trợ động từ / Be / Modal Verb + S</span>
+      </div>
+      <div class="example-box">
+        <p>A: I love playing football.<br>B: <strong>So do I.</strong> (Tôi cũng vậy.)</p>
+        <p>A: She is tired.<br>B: <strong>So am I.</strong> (Tôi cũng vậy.)</p>
+      </div>
+
+      <h3>2. Đồng tình phủ định với Neither / Nor ("Ai đó cũng không")</h3>
+      <div class="example-box">
+        <span class="highlight">Neither / Nor + Trợ động từ / Be / Modal Verb + S</span>
+      </div>
+      <div class="example-box">
+        <p>A: I don't like horror movies.<br>B: <strong>Neither do I. / Nor do I.</strong> (Tôi cũng không.)</p>
+        <p>A: He can't swim.<br>B: <strong>Neither can I.</strong> (Tôi cũng không.)</p>
+      </div>
+    </section>
+
+    <!-- III. ĐẢO NGỮ TRONG CÂU ĐIỀU KIỆN -->
+    <section class="section-card">
+      <h2>III. Đảo ngữ trong câu điều kiện</h2>
+      <p>Đảo ngữ trong câu điều kiện dùng để làm cho câu văn mang tính trang trọng (formal) hơn. Khi đảo ngữ, ta bỏ từ <em>If</em> và đưa trợ động từ lên đầu mệnh đề điều kiện.</p>
+
+      <h3>1. Loại 1</h3>
+      <div class="example-box">
+        <span class="highlight">Should + S + V-bare, S + will/can/may + V-bare</span><br>
+        - Gốc: If you need help, call me.<br>
+        &rarr; <strong>Should you need help, call me.</strong>
+      </div>
+
+      <h3>2. Loại 2</h3>
+      <ul>
+        <li>
+          <strong>Dùng động từ To Be (Were):</strong>
+          <div class="example-box">
+            <span class="highlight">Were + S + (N/Adj), S + would/could + V-bare</span><br>
+            - Gốc: If I were you, I would accept the offer.<br>
+            &rarr; <strong>Were I you, I would accept the offer.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>Dùng Động từ thường:</strong>
+          <div class="example-box">
+            <span class="highlight">Were + S + to-V, S + would/could + V-bare</span><br>
+            - Gốc: If he studied harder, he would pass the exam.<br>
+            &rarr; <strong>Were he to study harder, he would pass the exam.</strong>
+          </div>
+        </li>
+      </ul>
+
+      <h3>3. Loại 3</h3>
+      <div class="example-box">
+        <span class="highlight">Had + S + V3/ed, S + would/could + have + V3/ed</span><br>
+        - Gốc: If they had listened to me, they wouldn't have failed.<br>
+        &rarr; <strong>Had they listened to me, they wouldn't have failed.</strong>
+      </div>
+    </section>
+
+    <!-- IV. ĐẢO NGỮ VỚI TRẠNG TỪ PHỦ ĐỊNH / BÁN PHỦ ĐỊNH -->
+    <section class="section-card">
+      <h2>IV. Đảo ngữ với Trạng từ phủ định / bán phủ định</h2>
+      <p>Khi đưa một trạng từ hoặc cụm trạng từ mang nghĩa phủ định/bán phủ định lên đầu câu để nhấn mạnh, mệnh đề chính phải thực hiện đảo ngữ như dạng câu hỏi.</p>
+
+      <h3>1. Trạng từ bán phủ định / Phủ định tần suất</h3>
+      <p>Các từ: <em>Never, Seldom, Rarely, Hardly, Barely, Scarcely, Little...</em></p>
+      <div class="example-box">
+        <span class="highlight">Phủ định + Trợ động từ / Be + S + V</span><br>
+        - I have never seen such a beautiful sight. &rarr; <strong>Never have I seen such a beautiful sight.</strong><br>
+        - He seldom goes out at night. &rarr; <strong>Seldom does he go out at night.</strong><br>
+        - She knows little about his past. &rarr; <strong>Little does she know about his past.</strong>
+      </div>
+
+      <h3>2. Cấu trúc "Vừa mới... thì..."</h3>
+      <div class="example-box">
+        <span class="highlight">Hardly / Scarcely / Barely + had + S + V3/ed + when + S + V2/ed</span><br>
+        <span class="highlight">No sooner + had + S + V3/ed + than + S + V2/ed</span><br>
+        - <em>Hardly had I stepped out when it started to rain.</em><br>
+        - <em>No sooner had the teacher arrived than the class became quiet.</em>
+      </div>
+
+      <h3>3. Cụm từ đi với Only</h3>
+      <div class="example-box">
+        <span class="highlight">Only + Trạng ngữ + Trợ động từ + S + V</span><br>
+        - <strong>Only when / Only after / Only if:</strong> <em>Only when you finish your work can you go home.</em><br>
+        - <strong>Only by + V-ing:</strong> <em>Only by studying hard will you pass the exam.</em><br>
+        - <strong>Only then / Only in this way:</strong> <em>Only then did I realize my mistake.</em>
+      </div>
+
+      <h3>4. Các cụm từ phủ định chứa No</h3>
+      <ul>
+        <li><strong>At no time:</strong> Không bao giờ</li>
+        <li><strong>In no way:</strong> Không đời nào / Không cách nào</li>
+        <li><strong>Under / In no circumstances:</strong> Dù trong bất kỳ hoàn cảnh nào cũng không</li>
+        <li><strong>On no account / On no condition:</strong> Không vì bất kỳ lý do gì</li>
+        <li><strong>Not only ... but also ...:</strong> Không những ... mà còn ...</li>
+      </ul>
+      <div class="example-box">
+        - At no time did he suspect that he was being followed.<br>
+        - Under no circumstances should you open this door.<br>
+        - Not only is she smart, but she is also kind.
+      </div>
+    </section>
+
+    <!-- V. ĐẢO NGỮ VỚI SO THAT VÀ SUCH THAT -->
+    <section class="section-card">
+      <h2>V. Đảo ngữ với "So ... that" và "Such ... that"</h2>
+      <p>Dùng để nhấn mạnh mức độ tính chất hoặc đặc điểm của sự vật/hiện tượng.</p>
+
+      <h3>1. Đảo ngữ với So ... that</h3>
+      <div class="example-box">
+        <span class="highlight">So + Adj / Adv + Be / Trợ động từ + S + that + Mệnh đề</span><br>
+        - Gốc: The night was so cold that we couldn't sleep.<br>
+        &rarr; <strong>So cold was the night that we couldn't sleep.</strong><br>
+        - Gốc: He ran so fast that nobody could catch him.<br>
+        &rarr; <strong>So fast did he run that nobody could catch him.</strong>
+      </div>
+
+      <div class="note-box"><p><strong>[!] Trường hợp So Many / So Much / So Few / So Little:</strong></p>
+        <span class="highlight">So + many / much / few / little + N + Be / Trợ động từ + S + that + Mệnh đề</span><br>
+        - Ví dụ: <strong>So many mistakes did he make that he failed the test.</strong>
+      </div>
+
+      <h3>2. Đảo ngữ với Such ... that</h3>
+      <div class="example-box">
+        <span class="highlight">Such + Be + (a/an) + Noun + that + Mệnh đề</span><br>
+        - Gốc: It was such a heavy rain that the streets were flooded.<br>
+        &rarr; <strong>Such was a heavy rain that the streets were flooded.</strong><br>
+        - Gốc: Her beauty was such that everyone stared at her.<br>
+        &rarr; <strong>Such was her beauty that everyone stared at her.</strong>
+      </div>
+    </section>
+
+    <!-- VI. BÀI TẬP LUYỆN TẬP (EXERCISE) -->
+    <section class="section-card">
+      <h2>VI. Bài tập luyện tập (Exercise)</h2>
+
+      <h3>Viết lại câu sử dụng cấu trúc đảo ngữ:</h3>
+      <ol>
+        <li class="exercise-item">
+          I have never read such an interesting book.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans1')">Hiện đáp án</button>
+          <div id="ans1" class="answer-box">
+            <strong>Đáp án:</strong> Never have I read such an interesting book.
+          </div>
+        </li>
+        <li class="exercise-item">
+          If I were rich, I would travel around the world.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans2')">Hiện đáp án</button>
+          <div id="ans2" class="answer-box">
+            <strong>Đáp án:</strong> Were I rich, I would travel around the world.
+          </div>
+        </li>
+        <li class="exercise-item">
+          No sooner had we arrived at the station than the train left.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans3')">Hiện đáp án</button>
+          <div id="ans3" class="answer-box">
+            <strong>Đáp án:</strong> Hardly / Scarcely had we arrived at the station when the train left. (Hoặc giữ nguyên cấu trúc No sooner).
+          </div>
+        </li>
+        <li class="exercise-item">
+          He was so exhausted that he fell asleep immediately.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans4')">Hiện đáp án</button>
+          <div id="ans4" class="answer-box">
+            <strong>Đáp án:</strong> So exhausted was he that he fell asleep immediately.
+          </div>
+        </li>
+        <li class="exercise-item">
+          You must not touch this switch under any circumstances.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans5')">Hiện đáp án</button>
+          <div id="ans5" class="answer-box">
+            <strong>Đáp án:</strong> Under any circumstances must you not touch this switch. (Hoặc: Under no circumstances must you touch this switch.)
+          </div>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script src="../favicon.js"></script>
+  <script>
+    function toggleAnswer(id) {
+      const box = document.getElementById(id);
+      box.classList.toggle('show');
+      const btn = box.previousElementSibling;
+      if (box.classList.contains('show')) {
+        btn.textContent = 'Ẩn đáp án';
+      } else {
+        btn.textContent = 'Hiện đáp án';
+      }
+    }
+  </script>
+</body>
+</html>
