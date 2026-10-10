@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thể bị động</title>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1c1e21;
+      --accent: #2563eb;
+      --border-radius: 16px;
+      --code-bg: #f8fafc;
+      --warning-bg: #fef2f2;
+      --warning-border: #ef4444;
+      --success-bg: #f0fdf4;
+      --success-border: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    header {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #65676b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f2f5;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem 0;
+      color: #334155;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 0.75rem;
+    }
+
+    ul, ol {
+      margin-left: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .example-box {
+      background-color: var(--code-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .note-box {
+      background-color: var(--warning-bg);
+      border-left: 4px solid var(--warning-border);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-weight: 600;
+      color: #991b1b;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    /* Table Styles */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    /* Exercise Styles */
+    .exercise-item {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .exercise-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .toggle-btn {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .answer-box {
+      display: none;
+      background-color: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #14532d;
+    }
+
+    .answer-box.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back-btn">&larr; Quay lại Danh mục Ôn HSG</a>
+    <h1>Thể bị động (Passive Voice)</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- I. CÔNG THỨC & QUY TẮC -->
+    <section class="section-card">
+      <h2>I. Công thức & Quy tắc chuyển đổi</h2>
+      
+      <div class="example-box">
+        <strong>Công thức tổng quát:</strong> S + be + V3/ed + (by O)
+      </div>
+
+      <h3>4 bước chuyển từ câu Chủ động sang Bị động:</h3>
+      <ol>
+        <li><strong>Bước 1:</strong> Lấy Tân ngữ (O) của câu chủ động làm Chủ ngữ mới (S) của câu bị động.</li>
+        <li><strong>Bước 2:</strong> Xác định thì của động từ chính trong câu chủ động.</li>
+        <li><strong>Bước 3:</strong> Chia động từ <em>To Be</em> theo đúng thì đó và hòa hợp với chủ ngữ mới.</li>
+        <li><strong>Bước 4:</strong> Đưa động từ chính về dạng <em>V3/ed</em>, đặt <em>by + Tác nhân (O)</em> ở cuối câu.</li>
+      </ol>
+
+      <div class="note-box">
+        [!] Lưu ý về thứ tự địa điểm & thời gian:<br>
+        <strong>Địa điểm + by O + Thời gian</strong>
+        <p style="margin-top: 0.4rem; font-weight: normal; color: #7f1d1d;">
+          <em>Ví dụ:</em> The letter was sent to London by Nam yesterday.
+        </p>
+      </div>
+
+      <div class="note-box">
+        [!] Khi nào bỏ "by O"?<br>
+        Bỏ khi tác nhân là các đại từ chung chung: <em>they, people, someone, somebody, no one, nobody, I, you, we, he, she, it.</em>
+      </div>
+    </section>
+
+    <!-- II. BẢNG CHIA BỊ ĐỘNG Theo CÁC THÌ -->
+    <section class="section-card">
+      <h2>II. Bảng chia Bị động theo các Thì trong Tiếng Anh</h2>
+      
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Thì</th>
+              <th>Câu Chủ động</th>
+              <th>Câu Bị động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hiện tại đơn</strong></td>
+              <td>S + V(s/es) + O</td>
+              <td><span class="highlight">S + am/is/are + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Hiện tại tiếp diễn</strong></td>
+              <td>S + am/is/are + V-ing + O</td>
+              <td><span class="highlight">S + am/is/are + being + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Hiện tại hoàn thành</strong></td>
+              <td>S + have/has + V3/ed + O</td>
+              <td><span class="highlight">S + have/has + been + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Quá khứ đơn</strong></td>
+              <td>S + V2/ed + O</td>
+              <td><span class="highlight">S + was/were + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Quá khứ tiếp diễn</strong></td>
+              <td>S + was/were + V-ing + O</td>
+              <td><span class="highlight">S + was/were + being + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Quá khứ hoàn thành</strong></td>
+              <td>S + had + V3/ed + O</td>
+              <td><span class="highlight">S + had + been + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Tương lai đơn</strong></td>
+              <td>S + will + Vbare + O</td>
+              <td><span class="highlight">S + will be + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Tương lai gần</strong></td>
+              <td>S + am/is/are going to + Vbare + O</td>
+              <td><span class="highlight">S + am/is/are going to be + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Tương lai hoàn thành</strong></td>
+              <td>S + will have + V3/ed + O</td>
+              <td><span class="highlight">S + will have been + V3/ed</span></td>
+            </tr>
+            <tr>
+              <td><strong>Động từ khuyết thiếu</strong></td>
+              <td>S + can/could/should... + Vbare + O</td>
+              <td><span class="highlight">S + can/could/should... + be + V3/ed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- III. BÀI TẬP LUYỆN TẬP (EXERCISE) -->
+    <section class="section-card">
+      <h2>III. Bài tập luyện tập (Exercise)</h2>
+
+      <h3>Chuyển các câu chủ động sau sang câu bị động:</h3>
+      <ol>
+        <li class="exercise-item">
+          They built this bridge in 1995.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans1')">Hiện đáp án</button>
+          <div id="ans1" class="answer-box">
+            <strong>Đáp án:</strong> This bridge was built in 1995. (Lược bỏ <em>by them</em>)
+          </div>
+        </li>
+        <li class="exercise-item">
+          She is repairing the bicycle in the garden right now.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans2')">Hiện đáp án</button>
+          <div id="ans2" class="answer-box">
+            <strong>Đáp án:</strong> The bicycle is being repaired in the garden by her right now.
+          </div>
+        </li>
+        <li class="exercise-item">
+          Someone has stolen my bag!
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans3')">Hiện đáp án</button>
+          <div id="ans3" class="answer-box">
+            <strong>Đáp án:</strong> My bag has been stolen! (Lược bỏ <em>by someone</em>)
+          </div>
+        </li>
+        <li class="exercise-item">
+          Students must complete all homework before class.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans4')">Hiện đáp án</button>
+          <div id="ans4" class="answer-box">
+            <strong>Đáp án:</strong> All homework must be completed before class by students.
+          </div>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script src="../favicon.js"></script>
+  <script>
+    function toggleAnswer(id) {
+      const box = document.getElementById(id);
+      box.classList.toggle('show');
+      const btn = box.previousElementSibling;
+      if (box.classList.contains('show')) {
+        btn.textContent = 'Ẩn đáp án';
+      } else {
+        btn.textContent = 'Hiện đáp án';
+      }
+    }
+  </script>
+</body>
+</html>
