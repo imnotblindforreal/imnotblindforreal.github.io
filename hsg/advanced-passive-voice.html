@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thể bị động nâng cao</title>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1c1e21;
+      --accent: #2563eb;
+      --border-radius: 16px;
+      --code-bg: #f8fafc;
+      --warning-bg: #fef2f2;
+      --warning-border: #ef4444;
+      --success-bg: #f0fdf4;
+      --success-border: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    header {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #65676b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f2f5;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem 0;
+      color: #334155;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 0.75rem;
+    }
+
+    ul, ol {
+      margin-left: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .example-box {
+      background-color: var(--code-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .example-box p {
+      margin-bottom: 0.3rem;
+      color: #1e293b;
+    }
+
+    .example-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    /* Table Styles */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    /* Exercise Styles */
+    .exercise-item {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .exercise-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .toggle-btn {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .answer-box {
+      display: none;
+      background-color: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #14532d;
+    }
+
+    .answer-box.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back-btn">&larr; Quay lại Danh mục Ôn HSG</a>
+    <h1>Thể bị động nâng cao (Advanced Passive Voice)</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- I. BỊ ĐỘNG CỦA ĐỘNG TỪ TƯỜNG THUẬT -->
+    <section class="section-card">
+      <h2>I. Bị động của Động từ Tường thuật (Reported Speech Verbs)</h2>
+      <p>Thường dùng với các động từ chỉ ý kiến, nhận thức, niềm tin: <em>think, say, believe, report, rumor, know, claim, suppose, expect, consider, estimate...</em></p>
+
+      <div class="example-box">
+        <strong>Công thức chủ động:</strong> S1 + V1 + that + S2 + V2
+      </div>
+
+      <h3>Dạng 1: Dùng Chủ ngữ giả "It"</h3>
+      <div class="example-box">
+        <p><strong>Công thức:</strong> <span class="highlight">It + be + V1(3) + that + S2 + V2</span></p>
+        <p>- Chủ động: People say that he is rich.</p>
+        <p>&rarr; Bị động: <strong>It is said that he is rich.</strong></p>
+      </div>
+
+      <h3>Dạng 2: Đưa S2 lên làm Chủ ngữ</h3>
+      <div class="example-box">
+        <p><strong>Công thức:</strong> <span class="highlight">S2 + be + V1(3) + dạng của To-V</span></p>
+      </div>
+
+      <ul>
+        <li>
+          <strong>TH1: V2 cùng thì hoặc xảy ra sau V1 &rarr; Dùng to-V</strong>
+          <div class="example-box">
+            People think he plays well. &rarr; <strong>He is thought to play well.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>TH2: V2 xảy ra trước V1 &rarr; Dùng to have V3/ed</strong>
+          <div class="example-box">
+            They reported that the suspect fled. &rarr; <strong>The suspect was reported to have fled.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>TH3: V2 ở dạng tiếp diễn &rarr; Dùng to be V-ing</strong>
+          <div class="example-box">
+            They believe she is working now. &rarr; <strong>She is believed to be working now.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>TH4: V2 ở dạng hoàn thành tiếp diễn &rarr; Dùng to have been V-ing</strong>
+          <div class="example-box">
+            They think he had been waiting for hours. &rarr; <strong>He is thought to have been waiting for hours.</strong>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- II. BỊ ĐỘNG CỦA ĐỘNG TỪ CHỈ TRI GIÁC -->
+    <section class="section-card">
+      <h2>II. Bị động của Động từ Chỉ tri giác (Verbs of Perception)</h2>
+      <p>Áp dụng cho các động từ: <em>see, hear, watch, notice, observe, feel...</em></p>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Hành động</th>
+              <th>Câu Chủ động</th>
+              <th>Câu Bị động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Thấy toàn bộ hành động</strong></td>
+              <td>S + V + O + Vbare</td>
+              <td><span class="highlight">S + be + V3/ed + to-V</span></td>
+            </tr>
+            <tr>
+              <td><strong>Thấy một phần / đang diễn ra</strong></td>
+              <td>S + V + O + V-ing</td>
+              <td><span class="highlight">S + be + V3/ed + V-ing</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="example-box">
+        <p>- <strong>Ví dụ (toàn bộ):</strong> I saw her leave the house. &rarr; <strong>She was seen to leave the house.</strong></p>
+        <p>- <strong>Ví dụ (đang diễn ra):</strong> I heard him singing in the room. &rarr; <strong>He was heard singing in the room.</strong></p>
+      </div>
+    </section>
+
+    <!-- III. ĐỘNG TỪ MỆNH LỆNH & CẤU TRÚC SAI KHIẾN -->
+    <section class="section-card">
+      <h2>III. Bị động với Động từ Mệnh lệnh & Cấu trúc Sai khiến</h2>
+
+      <h3>1. Động từ Mệnh lệnh (Imperative Sentences)</h3>
+      <ul>
+        <li>
+          <strong>Khẳng định (V + O + adjunct):</strong>
+          <p style="margin-top: 0.2rem;"><span class="highlight">Let + O + be + V3</span> hoặc <span class="highlight">S + should/must + be + V3/ed</span></p>
+          <div class="example-box">
+            Close the door! &rarr; <strong>Let the door be closed!</strong> / <strong>The door should be closed!</strong>
+          </div>
+        </li>
+        <li>
+          <strong>Phủ định (Don't + V + O):</strong>
+          <p style="margin-top: 0.2rem;"><span class="highlight">Don't let + O + be + V3</span> hoặc <span class="highlight">Let + O + not be + V3</span></p>
+          <div class="example-box">
+            Don't touch this button! &rarr; <strong>Don't let this button be touched!</strong>
+          </div>
+        </li>
+      </ul>
+
+      <h3>2. Cấu trúc Nhờ vả / Thuê mướn (Causative Form)</h3>
+      <p>Chủ động:</p>
+      <ul>
+        <li>S + have + O (người) + Vbare + O (vật)</li>
+        <li>S + get + O (người) + to-V + O (vật)</li>
+      </ul>
+      <div class="example-box">
+        <p><strong>Bị động chung:</strong> <span class="highlight">S + have/get + O (vật) + V3/ed + (by O (người))</span></p>
+        <p>Ví dụ: I had the mechanic repair my car. &rarr; <strong>I had my car repaired by the mechanic.</strong></p>
+      </div>
+    </section>
+
+    <!-- IV. MAKE, LET, HELP, WANT, NEED -->
+    <section class="section-card">
+      <h2>IV. Bị động với Make, Let, Help, Want, Need</h2>
+
+      <h3>1. Make, Let, Help</h3>
+      <ul>
+        <li>
+          <strong>Make:</strong> S + make + O + Vbare &rarr; <span class="highlight">S + be made + to-V</span>
+          <div class="example-box">
+            My mom made me clean the room. &rarr; <strong>I was made to clean the room by my mom.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>Let:</strong> S + let + O + Vbare &rarr; <span class="highlight">S + be allowed to + Vbare</span> (hoặc <em>Let + O + be + V3</em>)
+          <div class="example-box">
+            He let me use his laptop. &rarr; <strong>I was allowed to use his laptop.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>Help:</strong> S + help + O + to-V &rarr; <span class="highlight">S + be helped + to-V</span>
+          <div class="example-box">
+            She helped me do homework. &rarr; <strong>I was helped to do homework.</strong>
+          </div>
+        </li>
+      </ul>
+
+      <h3>2. Need, Want, Deserve (Mang nghĩa bị động tự nhiên)</h3>
+      <div class="example-box">
+        <p><strong>Công thức:</strong> <span class="highlight">S (vật) + need/want/deserve + V-ing / to be V3</span></p>
+        <p>Ví dụ: The car needs washing. = <strong>The car needs to be washed.</strong></p>
+      </div>
+    </section>
+
+    <!-- V. BỊ ĐỘNG CỦA GERUND & INFINITIVE -->
+    <section class="section-card">
+      <h2>V. Bị động của Danh động từ (Gerund) & Động từ nguyên mẫu (Infinitive)</h2>
+
+      <h3>1. Bị động của Danh động từ (V-ing)</h3>
+      <ul>
+        <li><strong>Dạng cơ bản:</strong> <span class="highlight">being + V3/ed</span> &rarr; Ex: <em>I hate being treated like a child.</em></li>
+        <li><strong>Dạng hoàn thành:</strong> <span class="highlight">having been + V3/ed</span> &rarr; Ex: <em>He remembered having been taken to the zoo as a kid.</em></li>
+      </ul>
+
+      <h3>2. Bị động của Động từ nguyên mẫu (To-V)</h3>
+      <ul>
+        <li><strong>Dạng cơ bản:</strong> <span class="highlight">to be + V3/ed</span> &rarr; Ex: <em>She wants to be invited to the party.</em></li>
+        <li><strong>Dạng hoàn thành:</strong> <span class="highlight">to have been + V3/ed</span> &rarr; Ex: <em>He was happy to have been chosen for the team.</em></li>
+      </ul>
+
+      <h3>3. Bị động đi kèm với các Động từ đặc biệt</h3>
+      <ul>
+        <li>
+          <strong>Advise / Suggest / Recommend + V-ing + O:</strong><br>
+          &rarr; <span class="highlight">S + advise / suggest / recommend + that + O + (should) + be + V3</span>
+          <div class="example-box">
+            He suggested buying a new car. &rarr; <strong>He suggested that a new car (should) be bought.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>It is one's duty to V:</strong> &rarr; <span class="highlight">S + be supposed to + Vbare</span>
+          <div class="example-box">
+            It is your duty to lock the door. &rarr; <strong>You are supposed to lock the door.</strong>
+          </div>
+        </li>
+        <li>
+          <strong>It is impossible to V:</strong> &rarr; <span class="highlight">S + cannot be + V3</span>
+          <div class="example-box">
+            It is impossible to solve this problem. &rarr; <strong>This problem cannot be solved.</strong>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- VI. CÁC TRƯỜNG HỢP KHÁC -->
+    <section class="section-card">
+      <h2>VI. Các trường hợp Bị động Đặc biệt khác</h2>
+
+      <h3>1. Bị động với Động từ khuyết thiếu Hoàn thành (Modal Verbs in Past)</h3>
+      <div class="example-box">
+        <p><strong>Công thức:</strong> <span class="highlight">S + must / should / could / may / might + have been + V3</span></p>
+        <p>Ví dụ: You should have submitted the report. &rarr; <strong>The report should have been submitted.</strong></p>
+      </div>
+
+      <h3>2. Cấu trúc Bị động mang tính Tính từ (Passive with Prepositions)</h3>
+      <p>Một số động từ khi chuyển sang bị động không dùng giới từ <em>by</em> mà đi kèm với các giới từ cố định:</p>
+      <ul>
+        <li><strong>be covered with/by:</strong> được bao phủ bởi</li>
+        <li><strong>be filled with:</strong> được lấp đầy bởi</li>
+        <li><strong>be crowded with:</strong> đông đúc bởi</li>
+        <li><strong>be made of / from / out of / with:</strong> được làm từ</li>
+        <li><strong>be surprised / astonished at / by:</strong> bị ngạc nhiên bởi</li>
+        <li><strong>be satisfied / pleased with:</strong> hài lòng với</li>
+        <li><strong>be equipped with:</strong> được trang bị với</li>
+      </ul>
+      <div class="example-box">
+        Snow covered the mountain. &rarr; <strong>The mountain was covered with snow.</strong> <em>(Không dùng by snow)</em>
+      </div>
+    </section>
+
+    <!-- VII. BÀI TẬP LUYỆN TẬP (EXERCISE) -->
+    <section class="section-card">
+      <h2>VII. Bài tập luyện tập (Exercise)</h2>
+
+      <h3>Viết lại câu sang thể bị động:</h3>
+      <ol>
+        <li class="exercise-item">
+          People believe that the police caught the thief.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans1')">Hiện đáp án</button>
+          <div id="ans1" class="answer-box">
+            <strong>Cách 1:</strong> It is believed that the police caught the thief.<br>
+            <strong>Cách 2:</strong> The police are believed to have caught the thief.
+          </div>
+        </li>
+        <li class="exercise-item">
+          The teacher made us finish all the tests before noon.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans2')">Hiện đáp án</button>
+          <div id="ans2" class="answer-box">
+            <strong>Đáp án:</strong> We were made to finish all the tests before noon by the teacher.
+          </div>
+        </li>
+        <li class="exercise-item">
+          I had the plumber fix the leaking pipe.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans3')">Hiện đáp án</button>
+          <div id="ans3" class="answer-box">
+            <strong>Đáp án:</strong> I had the leaking pipe fixed by the plumber.
+          </div>
+        </li>
+        <li class="exercise-item">
+          They saw him steal the bicycle yesterday.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans4')">Hiện đáp án</button>
+          <div id="ans4" class="answer-box">
+            <strong>Đáp án:</strong> He was seen to steal the bicycle yesterday.
+          </div>
+        </li>
+        <li class="exercise-item">
+          Your hair needs cutting.
+          <br><button class="toggle-btn" onclick="toggleAnswer('ans5')">Hiện đáp án</button>
+          <div id="ans5" class="answer-box">
+            <strong>Đáp án tương đương:</strong> Your hair needs to be cut.
+          </div>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script src="../favicon.js"></script>
+  <script>
+    function toggleAnswer(id) {
+      const box = document.getElementById(id);
+      box.classList.toggle('show');
+      const btn = box.previousElementSibling;
+      if (box.classList.contains('show')) {
+        btn.textContent = 'Ẩn đáp án';
+      } else {
+        btn.textContent = 'Hiện đáp án';
+      }
+    }
+  </script>
+</body>
+</html>
