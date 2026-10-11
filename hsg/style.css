@@ -11,12 +11,13 @@
   --success-border: #22c55e;
 }
 
+/* Đã sửa lỗi: Thay dấu '-' bằng '*' */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -87,7 +88,6 @@ p {
   margin-bottom: 1rem;
 }
 
-/* Phong cách cho từ vựng và collocation trong bài luận */
 .vocab-link {
   font-weight: bold;
   text-decoration: none;
@@ -101,7 +101,6 @@ p {
   background-color: #eff6ff;
 }
 
-/* Danh sách giải nghĩa từ vựng */
 .vocab-list {
   list-style-type: none;
   margin-left: 0;
@@ -150,7 +149,6 @@ p {
   background: #bae6fd;
 }
 
-/* Styling cho hộp bản dịch Dịch */
 .translation-box {
   margin-top: 1.5rem;
   background-color: #f8fafc;
