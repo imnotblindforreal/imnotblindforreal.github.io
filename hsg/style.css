@@ -1,0 +1,188 @@
+:root {
+  --bg: #f0f2f5;
+  --card-bg: #ffffff;
+  --text: #1c1e21;
+  --accent: #2563eb;
+  --border-radius: 16px;
+  --code-bg: #f8fafc;
+  --warning-bg: #fef2f2;
+  --warning-border: #ef4444;
+  --success-bg: #f0fdf4;
+  --success-border: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+header {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #65676b;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.back-btn:hover {
+  color: var(--accent);
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  scroll-margin-top: 1.5rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f2f5;
+}
+
+p {
+  color: #334155;
+  margin-bottom: 1rem;
+}
+
+/* Phong cách cho từ vựng và collocation trong bài luận */
+.vocab-link {
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px dotted var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.vocab-link:hover {
+  background-color: #eff6ff;
+}
+
+/* Danh sách giải nghĩa từ vựng */
+.vocab-list {
+  list-style-type: none;
+  margin-left: 0;
+}
+
+.vocab-item {
+  background-color: var(--code-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  scroll-margin-top: 2rem;
+}
+
+.vocab-item .vocab-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.vocab-item strong {
+  color: #1e293b;
+  font-size: 1.05rem;
+}
+
+.vocab-item p {
+  margin-top: 0.2rem;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+/* Nút quay lại bài đọc */
+.back-to-reading {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  background: #e0f2fe;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.back-to-reading:hover {
+  background: #bae6fd;
+}
+
+/* Styling cho hộp bản dịch Dịch */
+.translation-box {
+  margin-top: 1.5rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.translation-box summary {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  user-select: none;
+  background-color: #eff6ff;
+  transition: background-color 0.2s ease;
+}
+
+.translation-box summary:hover {
+  background-color: #dbeafe;
+}
+
+.translation-content {
+  padding: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.translation-content p {
+  color: #475569;
+  margin-bottom: 0.75rem;
+}
+
+.translation-content p:last-child {
+  margin-bottom: 0;
+}
