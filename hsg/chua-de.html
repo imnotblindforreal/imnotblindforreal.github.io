@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chữa Đề Tiếng Anh</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Bổ sung style trực tiếp để card clickable và đẹp hơn */
+    .exam-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .exam-card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .exam-card-link:hover .exam-card {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px -5px rgba(37, 99, 235, 0.15), 0 8px 10px -6px rgba(37, 99, 235, 0.1);
+      border-color: #bfdbfe;
+    }
+
+    .badge-tag {
+      display: inline-block;
+      background: #eff6ff;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.75rem;
+    }
+
+    .exam-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+      transition: color 0.2s ease;
+    }
+
+    .exam-card-link:hover .exam-title {
+      color: var(--accent);
+    }
+
+    .exam-desc {
+      color: #64748b;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.25rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .date-info {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    .action-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .exam-card-link:hover .action-text {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Chữa Đề Tiếng Anh</h1>
+    <p class="subtitle">Kho lưu trữ và giải chi tiết các đề thi chất lượng cao</p>
+  </header>
+
+  <main class="container">
+    <a href="kscl-cat-l8l4-112026.html" class="exam-card-link">
+      <article class="exam-card">
+        <span class="badge-tag">LỚP 8 • CHUYÊN ANH</span>
+        <h2 class="exam-title">[CAT] KSCL Chuyên Anh Lớp 8 Lần 4 Tháng 11/2026</h2>
+        <p class="exam-desc">Bài khảo sát chất lượng định kỳ môn Tiếng Anh Chuyên kèm lời giải chi tiết và phân tích từ vựng.</p>
+        <div class="card-footer">
+          <span class="date-info">Tháng 11/2026</span>
+          <span class="action-text">Xem chi tiết &rarr;</span>
+        </div>
+      </article>
+    </a>
+  </main>
+
+</body>
+</html>
